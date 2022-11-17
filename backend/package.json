@@ -5,8 +5,9 @@
     "main": "src/index.js",
     "scripts": {
         "generate": "graphql-codegen --config codegen.yml",
-        "compile": "npm run generate && tsc",
-        "start": "npm run compile && nodemon ./dist/index.js"
+        "compile": "npm run generate && tsc --watch",
+        "start": "npm run compile && node ./dist/index.js",
+        "dev": "nodemon"
     },
     "keywords": [
         "node.js"
