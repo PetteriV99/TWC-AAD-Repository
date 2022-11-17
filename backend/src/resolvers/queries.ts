@@ -5,8 +5,8 @@ const queries: QueryResolvers = {
   Query: {
     // Our third argument (`contextValue`) has a type here, so we
     // can check the properties within our resolver's shared context value.
-    books: async (_, __, contextValue) => {
-      return await contextValue.dataSources.booksAPI.getBooks();
+    families: async (_, __, contextValue) => {
+      return await contextValue.dataSources.shoppingAPI.getFamilies();
     },
   },
 };
