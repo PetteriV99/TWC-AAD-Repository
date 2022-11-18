@@ -5,10 +5,4 @@ Repository for Advanced Application Development course.
 
 If starting development with hot-reload:
 
-`npm run dev`
-
-or \
-
-`npm start`
-
-Do the latter if you only need to run the server.
+`npm run watch`

@@ -5,9 +5,11 @@
     "main": "src/index.js",
     "scripts": {
         "generate": "graphql-codegen --config codegen.yml",
-        "compile": "npm run generate && tsc --watch",
+        "compile": "npm run generate && tsc",
         "start": "npm run compile && node ./dist/index.js",
-        "dev": "nodemon"
+        "dev": "nodemon",
+        "postinstall": "npm run compile",
+        "watch": "concurrently  --names \"CodeGen,TS,Nodemon\" -c \"bgYellow,bgBlue,bgMagenta\" \"graphql-codegen --watch 'src/**/*.ts'\"  \"tsc -w \" \"nodemon ./dist/index.js \""
     },
     "keywords": [
         "node.js"
@@ -22,14 +24,15 @@
         "dotenv": "^16.0.3",
         "express": "^4.18.2",
         "graphql": "^16.6.0",
-        "mongoose": "^6.7.2",
-        "nodemon": "^2.0.20"
+        "mongoose": "^6.7.2"
     },
     "devDependencies": {
         "@graphql-codegen/cli": "^2.13.12",
         "@graphql-codegen/typescript": "^2.8.2",
         "@graphql-codegen/typescript-resolvers": "^2.7.7",
         "@types/node": "^18.11.9",
+        "concurrently": "^7.5.0",
+        "nodemon": "^2.0.20",
         "typescript": "^4.9.3"
     }
 }
