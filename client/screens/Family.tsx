@@ -1,6 +1,8 @@
 import { StatusBar } from 'expo-status-bar'
+import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { Button, Checkbox } from 'react-native-paper'
+import { Button } from 'react-native-paper'
+import List from '../components/List'
 
 export default function Family() {
   return (
@@ -8,14 +10,27 @@ export default function Family() {
       <StatusBar style='auto' />
 
       <Text>My families:</Text>
-      {['perhe', 'mafia', 'Vänttiset'].map(item => (
-        <Text key={item}>{item}</Text>
-      ))}
-      <Button mode='contained'>Join/Add family</Button>
-      <Button mode='contained'>Edit family</Button>
-      <Button mode='contained'>Leave/Delete family</Button>
+      <List
+        headers={[{ id: 1, title: 'Name' }]}
+        items={[
+          {
+            id: 1,
+            name: 'Vänttiset',
+          },
+          {
+            id: 2,
+            name: 'Mafia',
+          },
+        ]}
+        listType={'family'}
+      />
 
-      <Button mode='contained'>Invite to family</Button>
+      {/* TODO: aukeaako tästä modali jossa kaikki perheet joihin voi liittyä? */}
+      <Button mode='contained'>Join/Add new family</Button>
+
+      {/* TODO: olisiko tätä varten erillinen lista jossa kutsut muihin perheisiin?
+      VAI modali jossa on mahdolliset kutsut?
+      */}
       <Button mode='contained'>Accept invite to family</Button>
     </View>
   )

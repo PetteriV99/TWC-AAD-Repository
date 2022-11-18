@@ -1,19 +1,35 @@
 import { StatusBar } from 'expo-status-bar'
+import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { Button, Checkbox } from 'react-native-paper'
+import List from '../components/List'
 
 export default function ShoppingList() {
   return (
     <View style={styles.container}>
       <StatusBar style='auto' />
 
-      <Text>Family shopping list:</Text>
-      {['lista1', 'lista2', 'lista3'].map(item => (
-        <Text key={item}>{item}</Text>
-      ))}
-      <Button mode='contained'>Add shopping list</Button>
-      <Button mode='contained'>Modify shopping list</Button>
-      <Button mode='contained'>Delete shopping list</Button>
+      {/* TODO: Painamalla riviä tai nimeä tai nappia näkee ostoslistan etusivulla
+        ja/tai modalissa? */}
+      <Text>My family shopping lists:</Text>
+
+      <List
+        headers={[{ id: 1, title: 'Name' }]}
+        items={[
+          {
+            id: 1,
+            name: 'perheen x lista1',
+          },
+          {
+            id: 2,
+            name: 'perheen y lista2',
+          },
+        ]}
+        listType={'lists'}
+      />
+
+      {/*  TODO: lisääkö tämä ylempään listaan uuden ostoslistan? */}
+      <Button mode='contained'>Add new shopping list</Button>
     </View>
   )
 }

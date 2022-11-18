@@ -7,6 +7,8 @@ export default function HomeScreen() {
     <View style={styles.container}>
       <Button mode='contained'>Sign up / Log in</Button>
       <Button mode='contained'>Log out</Button>
+      <Text>Käyttäjän nimi</Text>
+      <Text>jotain muuta tietoa</Text>
       <Button mode='contained'>Edit profile</Button>
     </View>
   )

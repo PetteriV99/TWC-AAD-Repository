@@ -1,15 +1,36 @@
 import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View } from 'react-native'
-import { Button, Checkbox } from 'react-native-paper'
+import { StyleSheet, View } from 'react-native'
+import { Text } from 'react-native-paper'
+import * as React from 'react'
+import List from '../components/List'
 
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
-      <StatusBar style='auto' />
+      <Text>This is shopping list y</Text>
+      <List
+        headers={[
+          { id: 1, title: 'Name' },
+          { id: 2, title: 'Quantity' },
+          { id: 3, title: 'Collected' },
+        ]}
+        items={[
+          {
+            id: 1,
+            name: 'tomaatti',
+            quantity: 10,
+            collected: 10,
+          },
+          {
+            id: 2,
+            name: 'omena',
+            quantity: 2,
+            collected: 0,
+          },
+        ]}
+        listType={'shopping'}
+      />
 
-      <Text>Tavara 1</Text>
-      <Button mode='contained'>Add x amount of item to y shopping list</Button>
-      <Checkbox status='checked' />
       {/* x määrä tavaraa kärryssä ? */}
       {/* shopping listan pitää päivittyä kun shoppailee  */}
       {/* - a user can update the shopping list when shopping after the shopping list is opened in the app (1 point), or app queries the list in short time intervals (2 point), or the backend can push the
