@@ -1,18 +1,12 @@
 type Query {
-  families: [Family]
+  users: [User]
 }
 
-type Family {
-  name: String
-}
-
-type AddFamilyMutationResponse {
-  code: String!
-  success: Boolean!
-  message: String!
-  family: Family
+type User {
+  username: String
+  password: String
 }
 
 type Mutation {
-  addFamily(name: String): AddFamilyMutationResponse
+  addUser(username: String, password: String): User
 }
