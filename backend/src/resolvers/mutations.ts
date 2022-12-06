@@ -9,7 +9,7 @@ const mutations: MutationResolvers = {
       const hash = await bcrypt.hash(password, 10);
 
       try {
-        const user = await dataSources.users.addUser({ username, email, password });
+        const user = await dataSources.users.addUser({ username, email, password: hash });
         return jwt.sign({ id: user._id }, process.env.JWT_SECRET);
       }
       catch (err) {
@@ -24,7 +24,13 @@ const mutations: MutationResolvers = {
 
       try {
         const user = await dataSources.users.getUser({ email, username })
+        if (!user) {
+          throw new Error('Error signing in');
+        }
         const valid = await bcrypt.compare(password, user.password);
+        if (!valid) {
+          throw new Error('Error signing in');
+        }
 
         return jwt.sign({ id: user._id }, process.env.JWT_SECRET);
       }
