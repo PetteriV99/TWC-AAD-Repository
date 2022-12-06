@@ -18,11 +18,19 @@ export default class UsersDataSource {
     return findUser;
   }
 
-  async addUser({ username, email, password }: Pick<UserDocument, 'username' | 'email' | 'password'>) {
+  async editUser({username, first_name, last_name, avatar_url}: Pick<UserDocument, 'username' | 'first_name' | 'last_name' | 'avatar_url'>) {
+    const editedUser = await this.model.findOneAndUpdate();
+    return editedUser;
+  }
+
+  async addUser({ username, email, password, first_name, last_name, avatar_url}: Pick<UserDocument, 'username' | 'email' | 'password' | 'first_name' | 'last_name' | 'avatar_url'>) {
     const newUser = new this.model({
       username,
       email,
       password,
+      first_name,
+      last_name,
+      avatar_url
     });
 
     const savedUser = await newUser.save();
