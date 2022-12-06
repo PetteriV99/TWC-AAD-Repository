@@ -3,6 +3,8 @@ import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 import { readFileSync } from 'fs';
 import mongoose from 'mongoose';
+import jwt from 'jsonwebtoken';
+import { GraphQLError } from 'graphql';
 
 import resolvers from './resolvers/index.js';
 
@@ -20,6 +22,7 @@ export interface ServerContext {
   dataSources: {
     users: Users;
   };
+  token?: string;
 }
 
 const server = new ApolloServer({
@@ -31,9 +34,28 @@ await mongoose.connect(process.env.MONGODB_URI).then(() => {
   console.log('Connected to MongoDB');
 });
 
+const getUser = (token: string) => {
+  if (token) {
+    try {
+      return jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+      throw new GraphQLError("You must be logged in", {
+
+        extensions: {
+          code: 'UNAUTHENTICATED',
+        },
+
+      })
+    }
+  }
+};
+
 const { url } = await startStandaloneServer(server, {
-  context: async () => {
+  context: async ({ req, res }) => {
+    const token = req.headers.authorization || '';
+    const user = getUser(token);
     return {
+      user,
       dataSources: {
         users: new Users(UserModel),
       },
