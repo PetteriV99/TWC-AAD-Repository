@@ -2,14 +2,21 @@ import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View } from 'react-native'
 import { Button, Checkbox } from 'react-native-paper'
 
-export default function HomeScreen() {
+export default function Profile({ navigation }: any) {
   return (
     <View style={styles.container}>
-      <Button mode='contained'>Sign up / Log in</Button>
+      <Button onPress={() => navigation.navigate('Login')} mode='contained'>
+        Sign up / Log in
+      </Button>
       <Button mode='contained'>Log out</Button>
       <Text>Käyttäjän nimi</Text>
       <Text>jotain muuta tietoa</Text>
-      <Button mode='contained'>Edit profile</Button>
+      <Button
+        onPress={() => navigation.navigate('EditProfile')}
+        mode='contained'
+      >
+        Edit profile
+      </Button>
     </View>
   )
 }

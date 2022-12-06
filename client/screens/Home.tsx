@@ -4,7 +4,7 @@ import { Text } from 'react-native-paper'
 import * as React from 'react'
 import List from '../components/List'
 
-export default function HomeScreen() {
+export default function Home() {
   return (
     <View style={styles.container}>
       <Text>This is shopping list y</Text>

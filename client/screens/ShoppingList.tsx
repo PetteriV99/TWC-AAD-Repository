@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import { Button, Checkbox } from 'react-native-paper'
 import List from '../components/List'
 
-export default function ShoppingList() {
+export default function Shopping() {
   return (
     <View style={styles.container}>
       <StatusBar style='auto' />
