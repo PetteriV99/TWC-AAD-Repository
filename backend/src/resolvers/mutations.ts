@@ -10,7 +10,9 @@ const mutations: MutationResolvers = {
 
       try {
         const user = await dataSources.users.addUser({ username, email, password: hash });
-        return jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+
+        return token;
       }
       catch (err) {
         console.log(err);
@@ -32,7 +34,9 @@ const mutations: MutationResolvers = {
           throw new Error('Error signing in');
         }
 
-        return jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+
+        return token;
       }
       catch (err) {
         console.log(err);

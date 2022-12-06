@@ -51,7 +51,7 @@ const getUser = (token: string) => {
 };
 
 const { url } = await startStandaloneServer(server, {
-  context: async ({ req, res }) => {
+  context: async ({ req }) => {
     const token = req.headers.authorization || '';
     const user = getUser(token);
     return {
