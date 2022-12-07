@@ -1,10 +1,11 @@
 import { GraphQLResolveInfo } from 'graphql';
-import { MyContext } from '../index';
+import { ServerContext } from '../index';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -14,32 +15,52 @@ export type Scalars = {
   Float: number;
 };
 
-export type AddFamilyMutationResponse = {
-  __typename?: 'AddFamilyMutationResponse';
-  code: Scalars['String'];
-  family?: Maybe<Family>;
-  message: Scalars['String'];
-  success: Scalars['Boolean'];
-};
-
-export type Family = {
-  __typename?: 'Family';
-  name?: Maybe<Scalars['String']>;
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
-  addFamily?: Maybe<AddFamilyMutationResponse>;
+  logIn: Scalars['String'];
+  signUp: Scalars['String'];
+  updateUser: Scalars['String'];
 };
 
 
-export type MutationAddFamilyArgs = {
-  name?: InputMaybe<Scalars['String']>;
+export type MutationLogInArgs = {
+  email?: InputMaybe<Scalars['String']>;
+  password: Scalars['String'];
+  username?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationSignUpArgs = {
+  avatar_url?: InputMaybe<Scalars['String']>;
+  email: Scalars['String'];
+  first_name?: InputMaybe<Scalars['String']>;
+  last_name?: InputMaybe<Scalars['String']>;
+  password: Scalars['String'];
+  username: Scalars['String'];
+};
+
+
+export type MutationUpdateUserArgs = {
+  avatar_url?: InputMaybe<Scalars['String']>;
+  first_name?: InputMaybe<Scalars['String']>;
+  last_name?: InputMaybe<Scalars['String']>;
+  username?: InputMaybe<Scalars['String']>;
 };
 
 export type Query = {
   __typename?: 'Query';
-  families?: Maybe<Array<Maybe<Family>>>;
+  users?: Maybe<Array<Maybe<User>>>;
+};
+
+export type User = {
+  __typename?: 'User';
+  avatar_url?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  first_name?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  last_name?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -112,49 +133,48 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
-  AddFamilyMutationResponse: ResolverTypeWrapper<AddFamilyMutationResponse>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
-  Family: ResolverTypeWrapper<Family>;
+  ID: ResolverTypeWrapper<Scalars['ID']>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  User: ResolverTypeWrapper<User>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
-  AddFamilyMutationResponse: AddFamilyMutationResponse;
   Boolean: Scalars['Boolean'];
-  Family: Family;
+  ID: Scalars['ID'];
   Mutation: {};
   Query: {};
   String: Scalars['String'];
+  User: User;
 }>;
 
-export type AddFamilyMutationResponseResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['AddFamilyMutationResponse'] = ResolversParentTypes['AddFamilyMutationResponse']> = ResolversObject<{
-  code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  family?: Resolver<Maybe<ResolversTypes['Family']>, ParentType, ContextType>;
-  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+export type MutationResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
+  logIn?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationLogInArgs, 'password'>>;
+  signUp?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationSignUpArgs, 'email' | 'password' | 'username'>>;
+  updateUser?: Resolver<ResolversTypes['String'], ParentType, ContextType, Partial<MutationUpdateUserArgs>>;
+}>;
+
+export type QueryResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+  users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
+}>;
+
+export type UserResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
+  avatar_url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  first_name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  last_name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  password?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  username?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type FamilyResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Family'] = ResolversParentTypes['Family']> = ResolversObject<{
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type MutationResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
-  addFamily?: Resolver<Maybe<ResolversTypes['AddFamilyMutationResponse']>, ParentType, ContextType, Partial<MutationAddFamilyArgs>>;
-}>;
-
-export type QueryResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  families?: Resolver<Maybe<Array<Maybe<ResolversTypes['Family']>>>, ParentType, ContextType>;
-}>;
-
-export type Resolvers<ContextType = MyContext> = ResolversObject<{
-  AddFamilyMutationResponse?: AddFamilyMutationResponseResolvers<ContextType>;
-  Family?: FamilyResolvers<ContextType>;
+export type Resolvers<ContextType = ServerContext> = ResolversObject<{
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  User?: UserResolvers<ContextType>;
 }>;
 

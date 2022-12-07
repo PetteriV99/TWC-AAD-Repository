@@ -1,18 +1,19 @@
 type Query {
-  families: [Family]
+  users: [User]
 }
 
-type Family {
-  name: String
-}
-
-type AddFamilyMutationResponse {
-  code: String!
-  success: Boolean!
-  message: String!
-  family: Family
+type User {
+  id: ID!
+  username: String
+  email: String
+  password: String
+  first_name: String
+  last_name: String
+  avatar_url: String
 }
 
 type Mutation {
-  addFamily(name: String): AddFamilyMutationResponse
+  signUp(username: String!, email: String!, password: String!, first_name: String, last_name: String, avatar_url: String): String!
+  logIn(username: String, email: String, password: String!): String!
+  updateUser(username: String, first_name: String, last_name: String, avatar_url: String): String!
 }
