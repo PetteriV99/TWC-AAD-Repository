@@ -1,7 +1,3 @@
-type Query {
-  users: [User]
-}
-
 type User {
   id: ID!
   username: String
@@ -12,8 +8,31 @@ type User {
   avatar_url: String
 }
 
+type Family {
+  name: String
+  creator: ID
+  members: [ID]
+  lists: [ID]
+  invites: [ID]
+  description: String
+  avatar_url: String
+}
+
+type Query {
+  users: [User]
+  families: [Family]
+}
+
 type Mutation {
   signUp(username: String!, email: String!, password: String!, first_name: String, last_name: String, avatar_url: String): String!
   logIn(username: String, email: String, password: String!): String!
   updateUser(username: String, first_name: String, last_name: String, avatar_url: String): String!
+
+  createFamily(name: String!, description: String, avatar_url: String): Family!
+  updateFamily(familyId: ID!, name: String, description: String, avatar_url: String): Family!
+  deleteFamily(familyId: ID!): Family!
+
+  inviteToFamily(familyId: ID!, userId: ID!): Family!
+  familyInviteResponse(familyId: ID!, accept: Boolean!): Family!
+  removeFamilyMember(familyId: ID!, userId: ID!): Family!
 }

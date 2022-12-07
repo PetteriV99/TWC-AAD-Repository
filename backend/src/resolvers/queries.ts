@@ -4,9 +4,14 @@ const queries: QueryResolvers = {
   Query: {
     users: async (_, __, contextValue) => {
       const data = await contextValue.dataSources.users.getUsers();
-      console.log(data)
       return data;
-    }
+    },
+
+    // FAMILY RELATED QUERIES
+    families: async (_, __, contextValue) => {
+      const data = await contextValue.dataSources.families.getFamilies();
+      return data;
+    }, 
   },
 };
 

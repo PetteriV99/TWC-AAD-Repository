@@ -18,8 +18,9 @@ export default class UsersDataSource {
     return findUser;
   }
 
-  async editUser({username, first_name, last_name, avatar_url}: Pick<UserDocument, 'username' | 'first_name' | 'last_name' | 'avatar_url'>) {
-    const editedUser = await this.model.findOneAndUpdate();
+  async editUser(id: string, updateValues: Partial<UserDocument>) {
+    const editedUser = await this.model.findByIdAndUpdate(id, updateValues, { new: true });
+    console.log(editedUser)
     return editedUser;
   }
 

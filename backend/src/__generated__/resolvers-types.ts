@@ -15,11 +15,52 @@ export type Scalars = {
   Float: number;
 };
 
+export type Family = {
+  __typename?: 'Family';
+  avatar_url?: Maybe<Scalars['String']>;
+  creator?: Maybe<Scalars['ID']>;
+  description?: Maybe<Scalars['String']>;
+  invites?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  lists?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  members?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  name?: Maybe<Scalars['String']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  createFamily: Family;
+  deleteFamily: Family;
+  familyInviteResponse: Family;
+  inviteToFamily: Family;
   logIn: Scalars['String'];
+  removeFamilyMember: Family;
   signUp: Scalars['String'];
+  updateFamily: Family;
   updateUser: Scalars['String'];
+};
+
+
+export type MutationCreateFamilyArgs = {
+  avatar_url?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+};
+
+
+export type MutationDeleteFamilyArgs = {
+  familyId: Scalars['ID'];
+};
+
+
+export type MutationFamilyInviteResponseArgs = {
+  accept: Scalars['Boolean'];
+  familyId: Scalars['ID'];
+};
+
+
+export type MutationInviteToFamilyArgs = {
+  familyId: Scalars['ID'];
+  userId: Scalars['ID'];
 };
 
 
@@ -27,6 +68,12 @@ export type MutationLogInArgs = {
   email?: InputMaybe<Scalars['String']>;
   password: Scalars['String'];
   username?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationRemoveFamilyMemberArgs = {
+  familyId: Scalars['ID'];
+  userId: Scalars['ID'];
 };
 
 
@@ -40,6 +87,14 @@ export type MutationSignUpArgs = {
 };
 
 
+export type MutationUpdateFamilyArgs = {
+  avatar_url?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  familyId: Scalars['ID'];
+  name?: InputMaybe<Scalars['String']>;
+};
+
+
 export type MutationUpdateUserArgs = {
   avatar_url?: InputMaybe<Scalars['String']>;
   first_name?: InputMaybe<Scalars['String']>;
@@ -49,6 +104,7 @@ export type MutationUpdateUserArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  families?: Maybe<Array<Maybe<Family>>>;
   users?: Maybe<Array<Maybe<User>>>;
 };
 
@@ -134,6 +190,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Family: ResolverTypeWrapper<Family>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
@@ -144,6 +201,7 @@ export type ResolversTypes = ResolversObject<{
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean'];
+  Family: Family;
   ID: Scalars['ID'];
   Mutation: {};
   Query: {};
@@ -151,13 +209,31 @@ export type ResolversParentTypes = ResolversObject<{
   User: User;
 }>;
 
+export type FamilyResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Family'] = ResolversParentTypes['Family']> = ResolversObject<{
+  avatar_url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  creator?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  invites?: Resolver<Maybe<Array<Maybe<ResolversTypes['ID']>>>, ParentType, ContextType>;
+  lists?: Resolver<Maybe<Array<Maybe<ResolversTypes['ID']>>>, ParentType, ContextType>;
+  members?: Resolver<Maybe<Array<Maybe<ResolversTypes['ID']>>>, ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type MutationResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
+  createFamily?: Resolver<ResolversTypes['Family'], ParentType, ContextType, RequireFields<MutationCreateFamilyArgs, 'name'>>;
+  deleteFamily?: Resolver<ResolversTypes['Family'], ParentType, ContextType, RequireFields<MutationDeleteFamilyArgs, 'familyId'>>;
+  familyInviteResponse?: Resolver<ResolversTypes['Family'], ParentType, ContextType, RequireFields<MutationFamilyInviteResponseArgs, 'accept' | 'familyId'>>;
+  inviteToFamily?: Resolver<ResolversTypes['Family'], ParentType, ContextType, RequireFields<MutationInviteToFamilyArgs, 'familyId' | 'userId'>>;
   logIn?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationLogInArgs, 'password'>>;
+  removeFamilyMember?: Resolver<ResolversTypes['Family'], ParentType, ContextType, RequireFields<MutationRemoveFamilyMemberArgs, 'familyId' | 'userId'>>;
   signUp?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationSignUpArgs, 'email' | 'password' | 'username'>>;
+  updateFamily?: Resolver<ResolversTypes['Family'], ParentType, ContextType, RequireFields<MutationUpdateFamilyArgs, 'familyId'>>;
   updateUser?: Resolver<ResolversTypes['String'], ParentType, ContextType, Partial<MutationUpdateUserArgs>>;
 }>;
 
 export type QueryResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+  families?: Resolver<Maybe<Array<Maybe<ResolversTypes['Family']>>>, ParentType, ContextType>;
   users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
 }>;
 
@@ -173,6 +249,7 @@ export type UserResolvers<ContextType = ServerContext, ParentType extends Resolv
 }>;
 
 export type Resolvers<ContextType = ServerContext> = ResolversObject<{
+  Family?: FamilyResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
