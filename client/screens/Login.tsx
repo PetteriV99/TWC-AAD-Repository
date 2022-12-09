@@ -1,24 +1,40 @@
 import { StyleSheet, View } from 'react-native'
-import { Text, TextInput } from 'react-native-paper'
+import { Button, Text, TextInput } from 'react-native-paper'
 import * as React from 'react'
 import { StatusBar } from 'expo-status-bar'
+import { gql } from '@apollo/client/core'
+import { useMutation } from '@apollo/client'
+
+const LOGIN = gql`
+  mutation LogIn($email: String!, $password: String!) {
+    logIn(email: $email, password: $password)
+  }
+`
 
 export default function Login() {
-  const [text, setText] = React.useState('')
+  const [email, setEmail] = React.useState('')
+  const [password, setPassword] = React.useState('')
+  const [login, { data, loading, error }] = useMutation(LOGIN)
 
   return (
     <View style={{ marginTop: 50 }}>
       <Text style={{ fontSize: 30 }}>Login / Register</Text>
       <TextInput
         label='Email'
-        value={text}
-        onChangeText={text => setText(text)}
+        value={email}
+        onChangeText={text => setEmail(text)}
       />
       <TextInput
         label='Password'
-        value={text}
-        onChangeText={text => setText(text)}
+        value={password}
+        onChangeText={text => setPassword(text)}
       />
+      <Button mode='contained' onPress={async () => {
+        login({ variables: { email, password } })
+      }}>Login</Button>
+
+      {/* Temp field to see login process. Need to add error handling to backend */}
+      <Text>{ loading ? 'Loading...' : ( error ? 'Some error happened' : data && data.logIn ) }</Text>
     </View>
   )
 }

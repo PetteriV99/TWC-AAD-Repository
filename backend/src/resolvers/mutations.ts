@@ -39,7 +39,6 @@ const mutations: MutationResolvers = {
         return token;
       }
       catch (err) {
-        console.log(err);
         throw new Error("Error signing in")
       }
     },
