@@ -8,6 +8,7 @@ export default class FamilyDataSource {
     this.model = model;
   }
 
+  // Is there a need to have a method to fetch all families?
   async getFamilies() {
     // Could populate creator, members, invites and lists here
     return await this.model.find().populate('creator');

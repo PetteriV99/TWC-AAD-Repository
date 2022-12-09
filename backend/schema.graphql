@@ -20,7 +20,9 @@ type Family {
 
 type Query {
   users: [User]
+  
   families: [Family]
+  family(_id: ID, name: String): Family
 }
 
 type Mutation {

@@ -105,7 +105,14 @@ export type MutationUpdateUserArgs = {
 export type Query = {
   __typename?: 'Query';
   families?: Maybe<Array<Maybe<Family>>>;
+  family?: Maybe<Family>;
   users?: Maybe<Array<Maybe<User>>>;
+};
+
+
+export type QueryFamilyArgs = {
+  _id?: InputMaybe<Scalars['ID']>;
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type User = {
@@ -234,6 +241,7 @@ export type MutationResolvers<ContextType = ServerContext, ParentType extends Re
 
 export type QueryResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   families?: Resolver<Maybe<Array<Maybe<ResolversTypes['Family']>>>, ParentType, ContextType>;
+  family?: Resolver<Maybe<ResolversTypes['Family']>, ParentType, ContextType, Partial<QueryFamilyArgs>>;
   users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
 }>;
 
