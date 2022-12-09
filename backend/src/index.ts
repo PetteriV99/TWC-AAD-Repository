@@ -12,6 +12,9 @@ import resolvers from './resolvers/index.js';
 import Users from './datasources/Users.js';
 import UserModel from './models/UserModel.js';
 
+import Families from './datasources/Families.js';
+import FamilyModel from './models/FamilyModel.js';
+
 dotenv.config();
 
 // Note: this only works locally because it relies on `npm` routing
@@ -21,8 +24,9 @@ const typeDefs = readFileSync('./schema.graphql', { encoding: 'utf-8' });
 export interface ServerContext {
   dataSources: {
     users: Users;
+    families: Families;
   };
-  token?: string;
+  user?: string;
 }
 
 const server = new ApolloServer({
@@ -40,11 +44,9 @@ const getUser = (token: string) => {
       return jwt.verify(token, process.env.JWT_SECRET);
     } catch (err) {
       throw new GraphQLError("You must be logged in", {
-
         extensions: {
           code: 'UNAUTHENTICATED',
         },
-
       })
     }
   }
@@ -58,6 +60,7 @@ const { url } = await startStandaloneServer(server, {
       user,
       dataSources: {
         users: new Users(UserModel),
+        families: new Families(FamilyModel),
       },
     };
   },
