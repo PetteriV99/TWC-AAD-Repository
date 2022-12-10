@@ -22,6 +22,11 @@ export default class FamilyDataSource {
     return foundFamily;
   }
 
+  async getFamilyLists(familyId: string) {
+    const foundFamily = await this.model.findOne({ _id: familyId }).populate('lists');
+    return foundFamily?.lists;
+  }
+
   async createFamily({ name, creator, description, avatar_url}: Pick<FamilyDocument, 'name' | 'creator' | 'description' | 'avatar_url'>) {
     const newFamily = new this.model({
       name,
@@ -34,10 +39,10 @@ export default class FamilyDataSource {
     return savedFamily;
   }
 
-  async updateFamily(familyId: string, { name, description, avatar_url}: Pick<FamilyDocument, 'name' | 'description' | 'avatar_url'>) {
+  async updateFamily(familyId: string, { name, description, avatar_url, lists }: Pick<FamilyDocument, 'name' | 'description' | 'avatar_url' | 'lists'>) {
     const updatedFamily = await this.model.findOneAndUpdate(
       { _id: familyId },
-      { name, description, avatar_url },
+      { name, description, avatar_url, lists },
       { new: true }
     );
     return updatedFamily;

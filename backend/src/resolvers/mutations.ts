@@ -3,8 +3,18 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { UserDocument } from '../models/UserModel';
 
+import ShoppingList from './mutations/ShoppingList.js';
+
 const mutations: MutationResolvers = {
   Mutation: {
+
+    // ShoppingList Mutations
+    ...ShoppingList,
+
+    /*
+      Could move these to a separate file similar to the ShoppingList mutations?
+    */
+
     signUp: async (_, { username, email, password, first_name, last_name, avatar_url }, { dataSources }) => {
       email = email.trim().toLowerCase();
       const hash = await bcrypt.hash(password, 10);

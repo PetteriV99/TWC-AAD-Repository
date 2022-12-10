@@ -25,10 +25,11 @@ const FamilySchema = new Schema<FamilyDocument>({
         type: [Schema.Types.ObjectId],
         required: true
     },
-    lists: {
-        type: [Schema.Types.ObjectId],
+    lists: [{
+        type: Schema.Types.ObjectId,
+        ref: 'ShoppingList',
         required: true
-    },
+    }],
     invites: {
         type: [Schema.Types.ObjectId],
         required: true

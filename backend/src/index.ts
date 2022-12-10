@@ -15,6 +15,9 @@ import UserModel from './models/UserModel.js';
 import Families from './datasources/Families.js';
 import FamilyModel from './models/FamilyModel.js';
 
+import ShoppingLists from './datasources/ShoppingList.js';
+import ShoppingListModel from './models/ShoppingList.js';
+
 dotenv.config();
 
 // Note: this only works locally because it relies on `npm` routing
@@ -25,6 +28,7 @@ export interface ServerContext {
   dataSources: {
     users: Users;
     families: Families;
+    shoppingLists: ShoppingLists;
   };
   user?: string;
 }
@@ -61,6 +65,7 @@ const { url } = await startStandaloneServer(server, {
       dataSources: {
         users: new Users(UserModel),
         families: new Families(FamilyModel),
+        shoppingLists: new ShoppingLists(ShoppingListModel),
       },
     };
   },

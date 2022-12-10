@@ -28,15 +28,37 @@ export type Family = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addItemToShoppingList: ShoppingList;
+  checkItemInShoppingList: ShoppingList;
   createFamily: Family;
+  createShoppingList: ShoppingList;
   deleteFamily: Family;
+  deleteShoppingList: ShoppingList;
   familyInviteResponse: Family;
   inviteToFamily: Family;
   logIn: Scalars['String'];
   removeFamilyMember: Family;
+  removeItemFromShoppingList: ShoppingList;
   signUp: Scalars['String'];
   updateFamily: Family;
+  updateItemInShoppingList: ShoppingList;
+  updateShoppingList: ShoppingList;
   updateUser: Scalars['String'];
+};
+
+
+export type MutationAddItemToShoppingListArgs = {
+  checked: Scalars['Boolean'];
+  listId: Scalars['ID'];
+  name: Scalars['String'];
+  quantity: Scalars['Int'];
+};
+
+
+export type MutationCheckItemInShoppingListArgs = {
+  checked: Scalars['Boolean'];
+  listId: Scalars['ID'];
+  name: Scalars['String'];
 };
 
 
@@ -47,8 +69,20 @@ export type MutationCreateFamilyArgs = {
 };
 
 
+export type MutationCreateShoppingListArgs = {
+  description?: InputMaybe<Scalars['String']>;
+  familyId: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
 export type MutationDeleteFamilyArgs = {
   familyId: Scalars['ID'];
+};
+
+
+export type MutationDeleteShoppingListArgs = {
+  listId: Scalars['ID'];
 };
 
 
@@ -77,6 +111,12 @@ export type MutationRemoveFamilyMemberArgs = {
 };
 
 
+export type MutationRemoveItemFromShoppingListArgs = {
+  listId: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
 export type MutationSignUpArgs = {
   avatar_url?: InputMaybe<Scalars['String']>;
   email: Scalars['String'];
@@ -95,6 +135,22 @@ export type MutationUpdateFamilyArgs = {
 };
 
 
+export type MutationUpdateItemInShoppingListArgs = {
+  checked?: InputMaybe<Scalars['Boolean']>;
+  currentName: Scalars['String'];
+  listId: Scalars['ID'];
+  newName?: InputMaybe<Scalars['String']>;
+  quantity?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type MutationUpdateShoppingListArgs = {
+  description?: InputMaybe<Scalars['String']>;
+  listId: Scalars['ID'];
+  name?: InputMaybe<Scalars['String']>;
+};
+
+
 export type MutationUpdateUserArgs = {
   avatar_url?: InputMaybe<Scalars['String']>;
   first_name?: InputMaybe<Scalars['String']>;
@@ -106,6 +162,7 @@ export type Query = {
   __typename?: 'Query';
   families?: Maybe<Array<Maybe<Family>>>;
   family?: Maybe<Family>;
+  familyLists?: Maybe<Array<Maybe<ShoppingList>>>;
   users?: Maybe<Array<Maybe<User>>>;
 };
 
@@ -113,6 +170,26 @@ export type Query = {
 export type QueryFamilyArgs = {
   _id?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryFamilyListsArgs = {
+  familyId: Scalars['ID'];
+};
+
+export type ShoppingItem = {
+  __typename?: 'ShoppingItem';
+  checked?: Maybe<Scalars['Boolean']>;
+  name?: Maybe<Scalars['String']>;
+  quantity?: Maybe<Scalars['Int']>;
+};
+
+export type ShoppingList = {
+  __typename?: 'ShoppingList';
+  description?: Maybe<Scalars['String']>;
+  familyId?: Maybe<Scalars['ID']>;
+  items?: Maybe<Array<Maybe<ShoppingItem>>>;
+  name?: Maybe<Scalars['String']>;
 };
 
 export type User = {
@@ -199,8 +276,11 @@ export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Family: ResolverTypeWrapper<Family>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
+  ShoppingItem: ResolverTypeWrapper<ShoppingItem>;
+  ShoppingList: ResolverTypeWrapper<ShoppingList>;
   String: ResolverTypeWrapper<Scalars['String']>;
   User: ResolverTypeWrapper<User>;
 }>;
@@ -210,8 +290,11 @@ export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean'];
   Family: Family;
   ID: Scalars['ID'];
+  Int: Scalars['Int'];
   Mutation: {};
   Query: {};
+  ShoppingItem: ShoppingItem;
+  ShoppingList: ShoppingList;
   String: Scalars['String'];
   User: User;
 }>;
@@ -228,21 +311,44 @@ export type FamilyResolvers<ContextType = ServerContext, ParentType extends Reso
 }>;
 
 export type MutationResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
+  addItemToShoppingList?: Resolver<ResolversTypes['ShoppingList'], ParentType, ContextType, RequireFields<MutationAddItemToShoppingListArgs, 'checked' | 'listId' | 'name' | 'quantity'>>;
+  checkItemInShoppingList?: Resolver<ResolversTypes['ShoppingList'], ParentType, ContextType, RequireFields<MutationCheckItemInShoppingListArgs, 'checked' | 'listId' | 'name'>>;
   createFamily?: Resolver<ResolversTypes['Family'], ParentType, ContextType, RequireFields<MutationCreateFamilyArgs, 'name'>>;
+  createShoppingList?: Resolver<ResolversTypes['ShoppingList'], ParentType, ContextType, RequireFields<MutationCreateShoppingListArgs, 'familyId' | 'name'>>;
   deleteFamily?: Resolver<ResolversTypes['Family'], ParentType, ContextType, RequireFields<MutationDeleteFamilyArgs, 'familyId'>>;
+  deleteShoppingList?: Resolver<ResolversTypes['ShoppingList'], ParentType, ContextType, RequireFields<MutationDeleteShoppingListArgs, 'listId'>>;
   familyInviteResponse?: Resolver<ResolversTypes['Family'], ParentType, ContextType, RequireFields<MutationFamilyInviteResponseArgs, 'accept' | 'familyId'>>;
   inviteToFamily?: Resolver<ResolversTypes['Family'], ParentType, ContextType, RequireFields<MutationInviteToFamilyArgs, 'familyId' | 'userId'>>;
   logIn?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationLogInArgs, 'password'>>;
   removeFamilyMember?: Resolver<ResolversTypes['Family'], ParentType, ContextType, RequireFields<MutationRemoveFamilyMemberArgs, 'familyId' | 'userId'>>;
+  removeItemFromShoppingList?: Resolver<ResolversTypes['ShoppingList'], ParentType, ContextType, RequireFields<MutationRemoveItemFromShoppingListArgs, 'listId' | 'name'>>;
   signUp?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationSignUpArgs, 'email' | 'password' | 'username'>>;
   updateFamily?: Resolver<ResolversTypes['Family'], ParentType, ContextType, RequireFields<MutationUpdateFamilyArgs, 'familyId'>>;
+  updateItemInShoppingList?: Resolver<ResolversTypes['ShoppingList'], ParentType, ContextType, RequireFields<MutationUpdateItemInShoppingListArgs, 'currentName' | 'listId'>>;
+  updateShoppingList?: Resolver<ResolversTypes['ShoppingList'], ParentType, ContextType, RequireFields<MutationUpdateShoppingListArgs, 'listId'>>;
   updateUser?: Resolver<ResolversTypes['String'], ParentType, ContextType, Partial<MutationUpdateUserArgs>>;
 }>;
 
 export type QueryResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   families?: Resolver<Maybe<Array<Maybe<ResolversTypes['Family']>>>, ParentType, ContextType>;
   family?: Resolver<Maybe<ResolversTypes['Family']>, ParentType, ContextType, Partial<QueryFamilyArgs>>;
+  familyLists?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShoppingList']>>>, ParentType, ContextType, RequireFields<QueryFamilyListsArgs, 'familyId'>>;
   users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
+}>;
+
+export type ShoppingItemResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['ShoppingItem'] = ResolversParentTypes['ShoppingItem']> = ResolversObject<{
+  checked?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  quantity?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ShoppingListResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['ShoppingList'] = ResolversParentTypes['ShoppingList']> = ResolversObject<{
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  familyId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  items?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShoppingItem']>>>, ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type UserResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
@@ -260,6 +366,8 @@ export type Resolvers<ContextType = ServerContext> = ResolversObject<{
   Family?: FamilyResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  ShoppingItem?: ShoppingItemResolvers<ContextType>;
+  ShoppingList?: ShoppingListResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 }>;
 
