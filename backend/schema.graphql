@@ -18,11 +18,25 @@ type Family {
   avatar_url: String
 }
 
+type ShoppingList {
+  familyId: ID
+  name: String
+  description: String
+  items: [ShoppingItem]
+}
+
+type ShoppingItem {
+  name: String
+  quantity: Int
+  checked: Boolean
+}
+
 type Query {
   users: [User]
   
   families: [Family]
   family(_id: ID, name: String): Family
+  familyLists(familyId: ID!): [ShoppingList]
 }
 
 type Mutation {
@@ -37,4 +51,13 @@ type Mutation {
   inviteToFamily(familyId: ID!, userId: ID!): Family!
   familyInviteResponse(familyId: ID!, accept: Boolean!): Family!
   removeFamilyMember(familyId: ID!, userId: ID!): Family!
+
+  createShoppingList(familyId: ID!, name: String!, description: String): ShoppingList!
+  updateShoppingList(listId: ID!, name: String, description: String): ShoppingList!
+  deleteShoppingList(listId: ID!): ShoppingList!
+
+  addItemToShoppingList(listId: ID!, name: String!, quantity: Int!, checked: Boolean!): ShoppingList!
+  updateItemInShoppingList(listId: ID!, currentName:String! newName: String, quantity: Int, checked: Boolean): ShoppingList!
+  removeItemFromShoppingList(listId: ID!, name: String!): ShoppingList!
+  checkItemInShoppingList(listId: ID!, name: String!, checked: Boolean!): ShoppingList!
 }

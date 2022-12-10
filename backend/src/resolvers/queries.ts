@@ -38,7 +38,25 @@ const queries: QueryResolvers = {
       }
 
       return family;
-    }
+    },
+
+    familyLists: async (_, { familyId }, { dataSources, user }) => {
+      if (!user) {
+        throw new Error('You must be logged in');
+      }
+
+      const family = await dataSources.families.getFamily({ _id: familyId });
+      if (!family) {
+        throw new Error('Family not found');
+      }
+
+      if (family.creator.toString() !== user.id && !family.members.includes(user.id)) {
+        throw new Error('You must be a member of the family to view the family lists');
+      }
+
+      const data = await dataSources.families.getFamilyLists(familyId);
+      return data;
+    },
   },
 };
 
