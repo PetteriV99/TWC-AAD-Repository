@@ -186,6 +186,7 @@ export type ShoppingItem = {
 
 export type ShoppingList = {
   __typename?: 'ShoppingList';
+  _id: Scalars['ID'];
   description?: Maybe<Scalars['String']>;
   familyId?: Maybe<Scalars['ID']>;
   items?: Maybe<Array<Maybe<ShoppingItem>>>;
@@ -344,6 +345,7 @@ export type ShoppingItemResolvers<ContextType = ServerContext, ParentType extend
 }>;
 
 export type ShoppingListResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['ShoppingList'] = ResolversParentTypes['ShoppingList']> = ResolversObject<{
+  _id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   familyId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   items?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShoppingItem']>>>, ParentType, ContextType>;
