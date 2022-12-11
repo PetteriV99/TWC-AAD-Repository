@@ -58,7 +58,8 @@ const getUser = (token: string) => {
 
 const { url } = await startStandaloneServer(server, {
   context: async ({ req }) => {
-    const token = req.headers.authorization || '';
+    const token = req.headers.authorization.replace(/['"]+/g, '') || '';
+    console.log(token)
     const user = getUser(token);
     return {
       user,
