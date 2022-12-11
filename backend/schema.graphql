@@ -9,6 +9,7 @@ type User {
 }
 
 type Family {
+  _id: ID!
   name: String
   creator: ID
   members: [ID]
@@ -38,6 +39,9 @@ type Query {
   families: [Family]
   family(_id: ID, name: String): Family
   familyLists(familyId: ID!): [ShoppingList]
+
+  userFamilies(userId: ID!): [Family]
+  userInvites(userId: ID!): [Family]
 }
 
 type Mutation {

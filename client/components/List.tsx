@@ -1,6 +1,9 @@
 import { StyleSheet, View } from 'react-native'
 import { Button, DataTable, Text } from 'react-native-paper'
 import * as React from 'react'
+import FamilyEditModal from '../screens/FamilyEditModal'
+import { ApolloQueryResult } from '@apollo/client'
+import FamilyCreateInviteModal from '../screens/FamilyCreateInviteModal'
 
 export default function List({
   title,
@@ -11,7 +14,7 @@ export default function List({
   title: string
   headers: { id: number; title: string }[]
   items: {
-    id: number
+    id: number | string
     name: string
     quantity?: number
     collected?: number
@@ -38,6 +41,14 @@ export default function List({
             onPress={() => console.log('open edit screen')}
           >
             <DataTable.Cell>{i.name}</DataTable.Cell>
+            {listType === 'family' && (
+              <>
+                <DataTable.Cell>
+                  <FamilyEditModal familyId={String(i.id)} />
+                  <FamilyCreateInviteModal familyId={String(i.id)} />
+                </DataTable.Cell>
+              </>
+            )}
             {listType === 'shopping' && (
               <>
                 <DataTable.Cell>

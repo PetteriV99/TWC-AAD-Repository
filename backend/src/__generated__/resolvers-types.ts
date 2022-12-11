@@ -17,6 +17,7 @@ export type Scalars = {
 
 export type Family = {
   __typename?: 'Family';
+  _id: Scalars['ID'];
   avatar_url?: Maybe<Scalars['String']>;
   creator?: Maybe<Scalars['ID']>;
   description?: Maybe<Scalars['String']>;
@@ -163,6 +164,8 @@ export type Query = {
   families?: Maybe<Array<Maybe<Family>>>;
   family?: Maybe<Family>;
   familyLists?: Maybe<Array<Maybe<ShoppingList>>>;
+  userFamilies?: Maybe<Array<Maybe<Family>>>;
+  userInvites?: Maybe<Array<Maybe<Family>>>;
   users?: Maybe<Array<Maybe<User>>>;
 };
 
@@ -175,6 +178,16 @@ export type QueryFamilyArgs = {
 
 export type QueryFamilyListsArgs = {
   familyId: Scalars['ID'];
+};
+
+
+export type QueryUserFamiliesArgs = {
+  userId: Scalars['ID'];
+};
+
+
+export type QueryUserInvitesArgs = {
+  userId: Scalars['ID'];
 };
 
 export type ShoppingItem = {
@@ -301,6 +314,7 @@ export type ResolversParentTypes = ResolversObject<{
 }>;
 
 export type FamilyResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Family'] = ResolversParentTypes['Family']> = ResolversObject<{
+  _id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   avatar_url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   creator?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -334,6 +348,8 @@ export type QueryResolvers<ContextType = ServerContext, ParentType extends Resol
   families?: Resolver<Maybe<Array<Maybe<ResolversTypes['Family']>>>, ParentType, ContextType>;
   family?: Resolver<Maybe<ResolversTypes['Family']>, ParentType, ContextType, Partial<QueryFamilyArgs>>;
   familyLists?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShoppingList']>>>, ParentType, ContextType, RequireFields<QueryFamilyListsArgs, 'familyId'>>;
+  userFamilies?: Resolver<Maybe<Array<Maybe<ResolversTypes['Family']>>>, ParentType, ContextType, RequireFields<QueryUserFamiliesArgs, 'userId'>>;
+  userInvites?: Resolver<Maybe<Array<Maybe<ResolversTypes['Family']>>>, ParentType, ContextType, RequireFields<QueryUserInvitesArgs, 'userId'>>;
   users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
 }>;
 
