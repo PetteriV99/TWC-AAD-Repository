@@ -97,13 +97,13 @@ const Router = () => {
   const closeMenu = () => setVisible(false)
   return (
     <Stack.Navigator
-      initialRouteName='Home'
+      initialRouteName='Login'
       screenOptions={{
         header: props => (
           <Appbar.Header>
-            {props.back ? (
+            {props.back && props.route.name !== 'MainApp' && (
               <Appbar.BackAction onPress={props.navigation.goBack} />
-            ) : null}
+            )}
             <Appbar.Content title='Family Shopping List App' />
 
             <Menu

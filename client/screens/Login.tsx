@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native'
-import { Button, Text, TextInput } from 'react-native-paper'
+import { Button, Divider, Text, TextInput } from 'react-native-paper'
 import * as React from 'react'
 import { gql } from '@apollo/client/core'
 import { useMutation } from '@apollo/client'
@@ -10,14 +10,18 @@ const LOGIN = gql`
   }
 `
 
-export default function Login() {
+export default function Login({ navigation }: any) {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [login, { data, loading, error }] = useMutation(LOGIN)
 
   return (
-    <View style={{ marginTop: 50 }}>
-      <Text style={{ fontSize: 30 }}>Login / Register</Text>
+    <View style={{ marginTop: 50, padding: 20 }}>
+      <Text
+        style={{ padding: 10, margin: 10, textAlign: 'center', fontSize: 25 }}
+      >
+        Login
+      </Text>
       <TextInput
         label='Email'
         value={email}
@@ -28,6 +32,7 @@ export default function Login() {
         value={password}
         onChangeText={text => setPassword(text)}
       />
+      <Divider style={{ marginVertical: 20 }} />
       <Button
         mode='contained'
         onPress={async () => {
@@ -37,6 +42,23 @@ export default function Login() {
         Login
       </Button>
 
+      <Button
+        mode='text'
+        onPress={async () => {
+          login({ variables: { email, password } })
+        }}
+      >
+        Don't have an account? Sign up
+      </Button>
+      <Button
+        mode='contained'
+        onPress={() => {
+          navigation.navigate('MainApp')
+        }}
+        style={{ marginTop: 100 }}
+      >
+        TEMP: go to home page
+      </Button>
       {/* Temp field to see login process. Need to add error handling to backend */}
       <Text>
         {loading
