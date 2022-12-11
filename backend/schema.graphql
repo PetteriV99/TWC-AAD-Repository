@@ -19,6 +19,7 @@ type Family {
 }
 
 type ShoppingList {
+  _id: ID!
   familyId: ID
   name: String
   description: String
