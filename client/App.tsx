@@ -7,29 +7,29 @@ import {
   DarkTheme,
   DefaultTheme,
 } from 'react-native-paper'
-import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client'
+import { ApolloClient, HttpLink, InMemoryCache, ApolloLink } from '@apollo/client'
 import { ApolloProvider } from '@apollo/client/react'
 import { setContext } from '@apollo/client/link/context'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const httpLink = createHttpLink({
+const httpLink = new HttpLink({
   uri: 'http://10.0.2.2:4000/',
-})
+});
 
-const authLink = setContext((_, { headers }) => {
-  // const token = localStorage.getItem('token');
-  const token = 'token'
+const authLink = setContext(async (_, { headers }) => {
+  const token = await AsyncStorage.getItem('AUTH_KEY');
   return {
     headers: {
       ...headers,
       authorization: token ? token : '',
-    },
+    }
   }
-})
+});
 
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
-})
+  cache: new InMemoryCache()
+});
 
 export default function App() {
   return (
