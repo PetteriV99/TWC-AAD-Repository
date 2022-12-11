@@ -7,10 +7,6 @@ export default function Profile({ navigation }: any) {
       <Card>
         <Card.Content>
           <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
-          {/* <Card.Actions>
-          <Button>Cancel</Button>
-          <Button>Ok</Button>
-        </Card.Actions> */}
           <Title>Käyttäjän nimi</Title>
           <Paragraph>Sähköposti</Paragraph>
         </Card.Content>
