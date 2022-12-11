@@ -12,19 +12,19 @@ export default function List({
   items: { id: number; name: string; quantity?: number; collected?: number }[]
   listType: 'family' | 'shopping' | 'lists'
 }) {
-  const [visible, setVisible] = React.useState(false)
-
   return (
     <DataTable>
       <DataTable.Header>
         {headers.map(h => (
           <DataTable.Title key={h.id}>{h.title}</DataTable.Title>
         ))}
-        <DataTable.Title>Edit</DataTable.Title>
       </DataTable.Header>
 
       {items.map(i => (
-        <DataTable.Row key={i.id}>
+        <DataTable.Row
+          key={i.id}
+          onPress={() => console.log('open edit screen')}
+        >
           <DataTable.Cell>{i.name}</DataTable.Cell>
           {listType === 'shopping' && (
             <>
@@ -35,30 +35,6 @@ export default function List({
               </DataTable.Cell>
             </>
           )}
-          {/* TODO: kaikki delete, add yms napit yhden napin taakse? */}
-          {/* {listType !== 'shopping' && (
-            <>
-              <DataTable.Cell>
-                <Button onPress={() => console.log('show delete modal')}>
-                  Delete
-                </Button>
-              </DataTable.Cell>
-              <DataTable.Cell>
-                <Button onPress={() => console.log('show add modal')}>
-                  {listType === 'family' ? 'Invite' : 'Add'}
-                </Button>
-              </DataTable.Cell>
-            </>
-          )} */}
-          <DataTable.Cell>
-            <Button
-              style={{ marginTop: 30 }}
-              onPress={() => console.log('show modal')}
-            >
-              ...
-              {/* TODO: add edit delete  */}
-            </Button>
-          </DataTable.Cell>
         </DataTable.Row>
       ))}
     </DataTable>
