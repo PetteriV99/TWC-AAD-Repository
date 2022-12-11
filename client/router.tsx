@@ -21,6 +21,7 @@ function MainApp() {
         name='Home'
         component={Home}
         options={{
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name='home' size={24} color={color} />
           ),
@@ -30,6 +31,8 @@ function MainApp() {
         name='Family'
         component={Family}
         options={{
+          headerShown: false,
+
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name='family-tree'
@@ -43,6 +46,8 @@ function MainApp() {
         name='ShoppingList'
         component={ShoppingList}
         options={{
+          headerShown: false,
+
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name='menu' size={24} color={color} />
           ),
@@ -52,6 +57,8 @@ function MainApp() {
         name='Profile'
         component={Profile}
         options={{
+          headerShown: false,
+
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name='human-greeting-variant'
@@ -88,7 +95,7 @@ const Router = () => {
             {props.back ? (
               <Appbar.BackAction onPress={props.navigation.goBack} />
             ) : null}
-            <Appbar.Content title='Family shopping list app' />
+            <Appbar.Content title='Family Shopping List App' />
           </Appbar.Header>
         ),
       }}

@@ -1,7 +1,6 @@
 import { StyleSheet, View } from 'react-native'
 import { Button, Text, TextInput } from 'react-native-paper'
 import * as React from 'react'
-import { StatusBar } from 'expo-status-bar'
 import { gql } from '@apollo/client/core'
 import { useMutation } from '@apollo/client'
 
@@ -29,12 +28,23 @@ export default function Login() {
         value={password}
         onChangeText={text => setPassword(text)}
       />
-      <Button mode='contained' onPress={async () => {
-        login({ variables: { email, password } })
-      }}>Login</Button>
+      <Button
+        mode='contained'
+        onPress={async () => {
+          login({ variables: { email, password } })
+        }}
+      >
+        Login
+      </Button>
 
       {/* Temp field to see login process. Need to add error handling to backend */}
-      <Text>{ loading ? 'Loading...' : ( error ? 'Some error happened' : data && data.logIn ) }</Text>
+      <Text>
+        {loading
+          ? 'Loading...'
+          : error
+          ? 'Some error happened'
+          : data && data.logIn}
+      </Text>
     </View>
   )
 }

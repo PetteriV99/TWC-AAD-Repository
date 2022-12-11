@@ -1,18 +1,17 @@
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, View } from 'react-native'
-import { Text } from 'react-native-paper'
+import { Divider, Text } from 'react-native-paper'
 import * as React from 'react'
 import List from '../components/List'
 
 export default function Home() {
   return (
-    <View style={styles.container}>
-      <Text>This is shopping list y</Text>
+    <View>
       <List
+        title='Current shopping list'
         headers={[
           { id: 1, title: 'Name' },
-          { id: 2, title: 'Quantity' },
-          { id: 3, title: 'Collected' },
+          { id: 2, title: 'Collected' },
         ]}
         items={[
           {

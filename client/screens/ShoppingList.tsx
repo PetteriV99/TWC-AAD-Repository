@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar'
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { Button, Checkbox } from 'react-native-paper'
@@ -6,14 +5,12 @@ import List from '../components/List'
 
 export default function Shopping() {
   return (
-    <View style={styles.container}>
-      <StatusBar style='auto' />
-
+    <View>
       {/* TODO: Painamalla riviä tai nimeä tai nappia näkee ostoslistan etusivulla
         ja/tai modalissa? */}
-      <Text>My family shopping lists:</Text>
 
       <List
+        title='My family shopping lists'
         headers={[{ id: 1, title: 'Name' }]}
         items={[
           {
@@ -34,11 +31,11 @@ export default function Shopping() {
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-})
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#fff',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//   },
+// })

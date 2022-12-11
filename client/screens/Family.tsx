@@ -6,11 +6,9 @@ import List from '../components/List'
 
 export default function Family() {
   return (
-    <View style={styles.container}>
-      <StatusBar style='auto' />
-
-      <Text>My families:</Text>
+    <View>
       <List
+        title='My families'
         headers={[{ id: 1, title: 'Name' }]}
         items={[
           {
@@ -35,12 +33,3 @@ export default function Family() {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-})
