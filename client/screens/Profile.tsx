@@ -1,16 +1,21 @@
-import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View } from 'react-native'
-import { Button, Checkbox } from 'react-native-paper'
+import { Button, Card, Checkbox, Paragraph, Title } from 'react-native-paper'
 
 export default function Profile({ navigation }: any) {
   return (
-    <View style={styles.container}>
-      <Button onPress={() => navigation.navigate('Login')} mode='contained'>
-        Sign up / Log in
-      </Button>
-      <Button mode='contained'>Log out</Button>
-      <Text>Käyttäjän nimi</Text>
-      <Text>jotain muuta tietoa</Text>
+    <View>
+      <Card>
+        <Card.Content>
+          <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
+          {/* <Card.Actions>
+          <Button>Cancel</Button>
+          <Button>Ok</Button>
+        </Card.Actions> */}
+          <Title>Käyttäjän nimi</Title>
+          <Paragraph>Sähköposti</Paragraph>
+        </Card.Content>
+      </Card>
+
       <Button
         onPress={() => navigation.navigate('EditProfile')}
         mode='contained'
