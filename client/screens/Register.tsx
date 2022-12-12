@@ -5,16 +5,17 @@ import { gql } from '@apollo/client/core'
 import { useMutation } from '@apollo/client'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const LOGIN = gql`
-  mutation LogIn($email: String, $password: String!) {
-    logIn(email: $email, password: $password)
+const REGISTER = gql`
+  mutation signUp($username: String!, $email: String!, $password: String!) {
+    signUp(username: $username, email: $email, password: $password)
   }
 `
 
 export default function Login({ navigation }: any) {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
-  const [login, { data, loading, error }] = useMutation(LOGIN, {
+  const [username, setUsername] = React.useState('')
+  const [register, { data, loading, error }] = useMutation(REGISTER, {
     onCompleted: data => {
       storeToken(data.logIn)
     },
@@ -24,7 +25,7 @@ export default function Login({ navigation }: any) {
   })
 
   const handleSubmit = () => {
-    login({ variables: { email, password } })
+    register({ variables: { username, email, password } })
   }
 
   const storeToken = async (value: any) => {
@@ -41,8 +42,13 @@ export default function Login({ navigation }: any) {
       <Text
         style={{ padding: 10, margin: 10, textAlign: 'center', fontSize: 25 }}
       >
-        Login
+        Register
       </Text>
+      <TextInput
+        label='Username'
+        value={username}
+        onChangeText={text => setUsername(text)}
+      />
       <TextInput
         label='Email'
         value={email}
@@ -58,23 +64,8 @@ export default function Login({ navigation }: any) {
         mode='contained'
         onPress={handleSubmit}
       >
-        Login
+        Register
       </Button>
-
-      <Button
-        mode='text'
-        onPress={() => navigation.navigate('Register')}
-      >
-        Don't have an account? Sign up
-      </Button>
-      {/* Temp field to see login process. Need to add error handling to backend */}
-      <Text>
-        {loading
-          ? 'Loading...'
-          : error
-          ? 'Some error happened'
-          : data && data.logIn}
-      </Text>
     </View>
   )
 }
