@@ -37,17 +37,17 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 })
 
-const CurrentShoppingList = React.createContext('')
+const DarkMode = React.createContext('')
 
 export default function App() {
   return (
     <ApolloProvider client={client}>
       <PaperProvider theme={DefaultTheme}>
-        <CurrentShoppingList.Provider value=''>
+        <DarkMode.Provider value=''>
           <NavigationContainer>
             <Router />
           </NavigationContainer>
-        </CurrentShoppingList.Provider>
+        </DarkMode.Provider>
       </PaperProvider>
     </ApolloProvider>
   )

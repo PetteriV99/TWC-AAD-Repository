@@ -4,8 +4,20 @@ import * as React from 'react'
 import { gql, useMutation, useQuery } from '@apollo/client'
 
 const UPDATE_SHOPPING_LIST_ITEM = gql`
-  mutation Mutation($listId: ID!, $currentName: String!, $newName: String, $quantity: Int, $checked: Boolean) {
-    updateItemInShoppingList(listId: $listId, currentName: $currentName, newName: $newName, quantity: $quantity, checked: $checked) {
+  mutation Mutation(
+    $listId: ID!
+    $currentName: String!
+    $newName: String
+    $quantity: Int
+    $checked: Boolean
+  ) {
+    updateItemInShoppingList(
+      listId: $listId
+      currentName: $currentName
+      newName: $newName
+      quantity: $quantity
+      checked: $checked
+    ) {
       _id
       familyId
       name
@@ -33,9 +45,19 @@ const GET_SHOPPING_LISTS = gql`
   }
 `
 
-export default function EditShoppingItem({ familyId, listName, currentName }: { familyId: string, listName: string, currentName: string }) {
+export default function EditShoppingItem({
+  familyId,
+  listName,
+  currentName,
+}: {
+  familyId: string
+  listName: string
+  currentName: string
+}) {
   const [update] = useMutation(UPDATE_SHOPPING_LIST_ITEM)
-  const query = useQuery(GET_SHOPPING_LISTS, { variables: { familyId: familyId } });
+  const query = useQuery(GET_SHOPPING_LISTS, {
+    variables: { familyId: familyId },
+  })
 
   const { familyLists } = query.data || {}
 
@@ -46,11 +68,15 @@ export default function EditShoppingItem({ familyId, listName, currentName }: { 
 
   React.useEffect(() => {
     if (familyLists) {
-      const currentList = familyLists.find((list: any) => list.name === listName)
-      if (!currentList) return;
+      const currentList = familyLists.find(
+        (list: any) => list.name === listName
+      )
+      if (!currentList) return
       setListId(currentList._id)
-      const currentItem = currentList.items.find((item: any) => item.name === currentName)
-      if (!currentItem) return;
+      const currentItem = currentList.items.find(
+        (item: any) => item.name === currentName
+      )
+      if (!currentItem) return
       setNewName(currentItem.name)
       setQuantity(currentItem.quantity)
       setChecked(currentItem.checked)
@@ -68,32 +94,41 @@ export default function EditShoppingItem({ familyId, listName, currentName }: { 
       <TextInput
         label='Name'
         value={newName}
-        onChangeText={(text) => setNewName(text)}
+        onChangeText={text => setNewName(text)}
       />
 
       <TextInput
         label='Quantity'
         value={String(quantity)}
-        onChangeText={(text) => setQuantity(parseInt(text))}
+        onChangeText={text => setQuantity(parseInt(text))}
       />
 
       <Text>Checked</Text>
-      <Checkbox status={checked ? 'checked' : 'unchecked'} onPress={() => setChecked(!checked)} />
+      <Checkbox
+        status={checked ? 'checked' : 'unchecked'}
+        onPress={() => setChecked(!checked)}
+      />
 
-      <Button mode='contained' onPress={async () => {
-        update({ variables: {
-          listId,
-          currentName,
-          ...newName && {newName},
-          ...quantity && {quantity},
-          ...checked && {checked},
-        }})
-      }}>Update</Button>
+      <Button
+        mode='contained'
+        onPress={async () => {
+          update({
+            variables: {
+              listId,
+              currentName,
+              ...(newName && { newName }),
+              ...(quantity && { quantity }),
+              ...(checked && { checked }),
+            },
+          })
+        }}
+      >
+        Update
+      </Button>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-  },
+  container: {},
 })
