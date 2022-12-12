@@ -3,9 +3,10 @@ import { Button, Divider, Text, TextInput } from 'react-native-paper'
 import * as React from 'react'
 import { gql } from '@apollo/client/core'
 import { useMutation } from '@apollo/client'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LOGIN = gql`
-  mutation LogIn($email: String!, $password: String!) {
+  mutation LogIn($email: String, $password: String!) {
     logIn(email: $email, password: $password)
   }
 `
@@ -13,7 +14,27 @@ const LOGIN = gql`
 export default function Login({ navigation }: any) {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
-  const [login, { data, loading, error }] = useMutation(LOGIN)
+  const [login, { data, loading, error }] = useMutation(LOGIN, {
+    onCompleted: data => {
+      storeToken(data.logIn)
+    },
+    onError: (err) => {
+      console.log(err)
+    }
+  })
+
+  const handleSubmit = () => {
+    login({ variables: { email, password } })
+  }
+
+  const storeToken = async (value: any) => {
+    try {
+      const jsonValue = JSON.stringify(value)
+      await AsyncStorage.setItem('AUTH_KEY', jsonValue).then(navigation.navigate('MainApp'))
+    } catch (e) {
+      // saving error
+    }
+  }
 
   return (
     <View style={{ marginTop: 50, padding: 20 }}>
@@ -35,29 +56,16 @@ export default function Login({ navigation }: any) {
       <Divider style={{ marginVertical: 20 }} />
       <Button
         mode='contained'
-        onPress={async () => {
-          login({ variables: { email, password } })
-        }}
+        onPress={handleSubmit}
       >
         Login
       </Button>
 
       <Button
         mode='text'
-        onPress={async () => {
-          login({ variables: { email, password } })
-        }}
+        onPress={() => navigation.navigate('Register')}
       >
         Don't have an account? Sign up
-      </Button>
-      <Button
-        mode='contained'
-        onPress={() => {
-          navigation.navigate('MainApp')
-        }}
-        style={{ marginTop: 100 }}
-      >
-        TEMP: go to home page
       </Button>
       {/* Temp field to see login process. Need to add error handling to backend */}
       <Text>
