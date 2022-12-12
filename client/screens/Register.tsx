@@ -17,10 +17,10 @@ export default function Login({ navigation }: any) {
   const [username, setUsername] = React.useState('')
   const [register, { data, loading, error }] = useMutation(REGISTER, {
     onCompleted: data => {
-      storeToken(data.logIn)
+      storeToken(data.signUp)
     },
     onError: (err) => {
-      console.log(err)
+        console.log(err)
     }
   })
 
@@ -33,7 +33,7 @@ export default function Login({ navigation }: any) {
       const jsonValue = JSON.stringify(value)
       await AsyncStorage.setItem('AUTH_KEY', jsonValue).then(navigation.navigate('MainApp'))
     } catch (e) {
-      // saving error
+      console.log(e)
     }
   }
 
@@ -66,6 +66,13 @@ export default function Login({ navigation }: any) {
       >
         Register
       </Button>
+      <Text>
+        {loading
+          ? 'Loading...'
+          : error
+          ? error.graphQLErrors.map(({ message }, i) => {return(<Text key={i}>{message}</Text>)})
+          : data && data.signUp}
+      </Text>
     </View>
   )
 }
