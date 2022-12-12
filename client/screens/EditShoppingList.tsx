@@ -2,10 +2,15 @@ import { StyleSheet, View } from 'react-native'
 import { Button, Text, TextInput } from 'react-native-paper'
 import * as React from 'react'
 import { gql, useMutation, useQuery } from '@apollo/client'
+import CustomModal from '../components/CustomModal'
 
 const UPDATE_SHOPPING_LIST = gql`
   mutation Mutation($listId: ID!, $name: String, $description: String) {
-    updateShoppingList(listId: $listId, name: $name, description: $description) {
+    updateShoppingList(
+      listId: $listId
+      name: $name
+      description: $description
+    ) {
       description
       name
     }
@@ -28,9 +33,17 @@ const GET_SHOPPING_LISTS = gql`
   }
 `
 
-export default function EditShoppingList({ familyId, listName }: { familyId: string, listName: string }) {
+export default function EditShoppingList({
+  familyId,
+  listName,
+}: {
+  familyId: string
+  listName: string
+}) {
   const [update] = useMutation(UPDATE_SHOPPING_LIST)
-  const query = useQuery(GET_SHOPPING_LISTS, { variables: { familyId: familyId } });
+  const query = useQuery(GET_SHOPPING_LISTS, {
+    variables: { familyId: familyId },
+  })
 
   const { familyLists } = query.data || {}
 
@@ -40,8 +53,10 @@ export default function EditShoppingList({ familyId, listName }: { familyId: str
 
   React.useEffect(() => {
     if (familyLists) {
-      const currentList = familyLists.find((list: any) => list.name === listName)
-      if (!currentList) return;
+      const currentList = familyLists.find(
+        (list: any) => list.name === listName
+      )
+      if (!currentList) return
       setListId(currentList._id)
       setName(currentList.name)
       setDescription(currentList.description)
@@ -54,32 +69,40 @@ export default function EditShoppingList({ familyId, listName }: { familyId: str
   // Maybe add some input validations here
 
   return (
-    <View style={styles.container}>
-      <Text>Edit shopping list details</Text>
-      <TextInput
-        label='Name'
-        value={name}
-        onChangeText={(text) => setName(text)}
-      />
+    <CustomModal buttonName='Edit'>
+      <View style={styles.container}>
+        <Text>Edit shopping list details</Text>
+        <TextInput
+          label='Name'
+          value={name}
+          onChangeText={text => setName(text)}
+        />
 
-      <TextInput
-        label='Description'
-        value={description}
-        onChangeText={(text) => setDescription(text)}
-      />
+        <TextInput
+          label='Description'
+          value={description}
+          onChangeText={text => setDescription(text)}
+        />
 
-      <Button mode='contained' onPress={async () => {
-        update({ variables: {
-          listId,
-          ...name && {name},
-          ...description && {description},
-        }})
-      }}>Update</Button>
-    </View>
+        <Button
+          mode='contained'
+          onPress={async () => {
+            update({
+              variables: {
+                listId,
+                ...(name && { name }),
+                ...(description && { description }),
+              },
+            })
+          }}
+        >
+          Update
+        </Button>
+      </View>
+    </CustomModal>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-  },
+  container: {},
 })

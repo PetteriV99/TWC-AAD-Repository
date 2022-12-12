@@ -4,6 +4,7 @@ import * as React from 'react'
 import FamilyEditModal from '../screens/FamilyEditModal'
 import { ApolloQueryResult } from '@apollo/client'
 import FamilyCreateInviteModal from '../screens/FamilyCreateInviteModal'
+import EditShoppingList from '../screens/EditShoppingList'
 
 export default function List({
   title,
@@ -54,6 +55,12 @@ export default function List({
                 <DataTable.Cell>
                   {/* <Checkbox status={i.collected ? 'checked' : 'unchecked'} /> */}
                   {i.collected} / {i.quantity}
+                </DataTable.Cell>
+                <DataTable.Cell>
+                  <EditShoppingList
+                    familyId={String(i.id)}
+                    listName={String(i.name)}
+                  />
                 </DataTable.Cell>
               </>
             )}

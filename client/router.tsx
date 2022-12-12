@@ -7,7 +7,7 @@ import {
   Profile,
   Login,
   EditProfile,
-  Register
+  Register,
 } from './screens'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 const Stack = createNativeStackNavigator()

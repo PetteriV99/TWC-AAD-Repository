@@ -7,4 +7,4 @@ import Login from './Login';
 import EditProfile from './EditProfile';
 import Register from './Register'
 
-export {ShoppingList, Home, Family, Profile, Login,EditProfile, Register };
+export {ShoppingList, Home, Family, Profile, Login,EditProfile, Register, };
