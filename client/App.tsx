@@ -10,10 +10,21 @@ import {
 import { ApolloClient, HttpLink, InMemoryCache, ApolloLink } from '@apollo/client'
 import { ApolloProvider } from '@apollo/client/react'
 import { setContext } from '@apollo/client/link/context'
+import { onError } from "@apollo/client/link/error";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const httpLink = new HttpLink({
   uri: 'http://10.0.2.2:4000/',
+});
+
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.forEach(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    );
+  if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
 const authLink = setContext(async (_, { headers }) => {
@@ -27,7 +38,7 @@ const authLink = setContext(async (_, { headers }) => {
 });
 
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: ApolloLink.from([errorLink, authLink.concat(httpLink)]),
   cache: new InMemoryCache()
 });
 
