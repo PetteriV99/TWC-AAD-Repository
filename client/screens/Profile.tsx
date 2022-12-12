@@ -3,7 +3,7 @@ import { Button, Card, Checkbox, Paragraph, Title } from 'react-native-paper'
 
 export default function Profile({ navigation }: any) {
   return (
-    <View>
+    <View style={styles.container}>
       <Card>
         <Card.Content>
           <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
@@ -24,9 +24,7 @@ export default function Profile({ navigation }: any) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 10,
+    margin: 10,
   },
 })

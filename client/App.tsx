@@ -7,15 +7,20 @@ import {
   DarkTheme,
   DefaultTheme,
 } from 'react-native-paper'
-import { ApolloClient, HttpLink, InMemoryCache, ApolloLink } from '@apollo/client'
+import {
+  ApolloClient,
+  HttpLink,
+  InMemoryCache,
+  ApolloLink,
+} from '@apollo/client'
 import { ApolloProvider } from '@apollo/client/react'
 import { setContext } from '@apollo/client/link/context'
 import { onError } from "@apollo/client/link/error";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const httpLink = new HttpLink({
-  uri: 'http://10.0.2.2:4000/',
-});
+  uri: 'http://169.254.123.230:4000/',
+})
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
@@ -28,27 +33,32 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 });
 
 const authLink = setContext(async (_, { headers }) => {
-  const token = await AsyncStorage.getItem('AUTH_KEY');
+  const token = await AsyncStorage.getItem('AUTH_KEY')
+
   return {
     headers: {
       ...headers,
       authorization: token ? token : '',
-    }
+    },
   }
-});
+})
 
 const client = new ApolloClient({
   link: ApolloLink.from([errorLink, authLink.concat(httpLink)]),
   cache: new InMemoryCache()
 });
 
+const DarkMode = React.createContext('')
+
 export default function App() {
   return (
     <ApolloProvider client={client}>
       <PaperProvider theme={DefaultTheme}>
-        <NavigationContainer>
-          <Router />
-        </NavigationContainer>
+        <DarkMode.Provider value=''>
+          <NavigationContainer>
+            <Router />
+          </NavigationContainer>
+        </DarkMode.Provider>
       </PaperProvider>
     </ApolloProvider>
   )

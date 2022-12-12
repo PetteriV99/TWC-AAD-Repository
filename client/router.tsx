@@ -17,6 +17,7 @@ const Tab = createBottomTabNavigator()
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Appbar, Button, Divider, Menu } from 'react-native-paper'
 import { Platform } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 function MainApp() {
   return (
