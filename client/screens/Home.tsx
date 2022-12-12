@@ -19,40 +19,20 @@ const USER_FAMILIES = gql`
     }
   }
 `
-export default function Home() {
+export default function Home({ route, navigation }: any) {
   const { loading, error, data, refetch } = useQuery(USER_FAMILIES)
 
   if (loading) return <Text>Loading...</Text>
   if (error) return <Text>{error.message}</Text>
 
-  const families = data.userFamilies
+  const families = route?.params?.listName ? data.userFamilies : []
+
+  const currentList = route?.params?.listName ?? 'No selected list'
+
   return (
     <ScrollView style={styles.container}>
       <List
-        title='Current shopping list'
-        headers={[
-          { id: 1, title: 'Name' },
-          { id: 2, title: 'Collected' },
-        ]}
-        items={[
-          {
-            id: 1,
-            name: 'tomaatti',
-            quantity: 10,
-            collected: 10,
-          },
-          {
-            id: 2,
-            name: 'omena',
-            quantity: 2,
-            collected: 0,
-          },
-        ]}
-        listType={'shopping'}
-      />
-
-      <List
-        title='Current Shopping List'
+        title={currentList}
         headers={[
           { id: 1, title: 'Name' },
           { id: 2, title: 'Collected' },
@@ -64,6 +44,9 @@ export default function Home() {
         listType={'shopping'}
       />
 
+      {route?.params?.listName === undefined && (
+        <Text style={styles.center}>Please select a list</Text>
+      )}
       {/* x määrä tavaraa kärryssä ? */}
       {/* shopping listan pitää päivittyä kun shoppailee  */}
       {/* - a user can update the shopping list when shopping after the shopping list is opened in the app (1 point), or app queries the list in short time intervals (2 point), or the backend can push the
@@ -80,5 +63,12 @@ const styles = StyleSheet.create({
   container: {
     margin: 10,
     padding: 10,
+  },
+  center: {
+    flex: 1,
+    alignSelf: 'center',
+    margin: 20,
+    padding: 10,
+    justifyContent: 'center',
   },
 })

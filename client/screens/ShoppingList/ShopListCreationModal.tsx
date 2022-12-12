@@ -1,7 +1,7 @@
 import { ApolloQueryResult, gql, useMutation } from '@apollo/client'
 import React from 'react'
 import { View, TextInput, Button, StyleSheet, Text } from 'react-native'
-import CustomModal from '../components/CustomModal'
+import CustomModal from '../../components/CustomModal'
 
 const CREATE_SHOPLIST = gql`
   mutation createShoppingList(
@@ -49,9 +49,9 @@ export default function FamilyCreationModal({
   if (error) return <Text>{error.message}</Text>
 
   return (
-    <CustomModal buttonName='Create a new shopping list for family'>
+    <CustomModal buttonName='Add new shopping list'>
       <View style={styles.container}>
-        <Text style={styles.title}>Create a new shopping list</Text>
+        <Text style={styles.title}>Add new shopping list</Text>
         <Text style={styles.subtitle}>Fill in the required details</Text>
         <TextInput
           style={styles.input}

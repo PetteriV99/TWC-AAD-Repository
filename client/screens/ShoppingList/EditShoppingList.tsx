@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native'
 import { Button, Text, TextInput } from 'react-native-paper'
 import * as React from 'react'
 import { gql, useMutation, useQuery } from '@apollo/client'
-import CustomModal from '../components/CustomModal'
+import CustomModal from '../../components/CustomModal'
 
 const UPDATE_SHOPPING_LIST = gql`
   mutation Mutation($listId: ID!, $name: String, $description: String) {
@@ -71,15 +71,23 @@ export default function EditShoppingList({
   return (
     <CustomModal buttonName='Edit'>
       <View style={styles.container}>
-        <Text>Edit shopping list details</Text>
+        <Text style={styles.title}>Edit shopping list details</Text>
+        <Text>Name:</Text>
+
         <TextInput
-          label='Name'
+          style={styles.input}
+          placeholder='List name *'
+          placeholderTextColor='#A9A9A9'
           value={name}
           onChangeText={text => setName(text)}
         />
 
+        <Text>Description</Text>
+
         <TextInput
-          label='Description'
+          style={styles.input}
+          placeholder='Description'
+          placeholderTextColor='#A9A9A9'
           value={description}
           onChangeText={text => setDescription(text)}
         />
@@ -104,5 +112,22 @@ export default function EditShoppingList({
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  input: {
+    height: 40,
+    width: 300,
+    margin: 12,
+    padding: 10,
+    borderRadius: 10,
+    borderColor: '#A9A9A9',
+  },
 })

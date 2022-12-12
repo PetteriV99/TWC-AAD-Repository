@@ -4,14 +4,17 @@ import * as React from 'react'
 import FamilyEditModal from '../screens/FamilyEditModal'
 import { ApolloQueryResult } from '@apollo/client'
 import FamilyCreateInviteModal from '../screens/FamilyCreateInviteModal'
-import EditShoppingList from '../screens/EditShoppingList'
+import EditShoppingList from '../screens/ShoppingList/EditShoppingList'
+import DeleteShoppingList from '../screens/ShoppingList/DeleteShoppingList'
 
 export default function List({
+  navigation,
   title,
   headers,
   items,
   listType,
 }: {
+  navigation?: any
   title: string
   headers: { id: number; title: string }[]
   items: {
@@ -39,7 +42,10 @@ export default function List({
         {items.map(i => (
           <DataTable.Row
             key={i.id}
-            onPress={() => console.log('open edit screen')}
+            onPress={() =>
+              listType === 'lists' &&
+              navigation.navigate('Home', { listName: i.name })
+            }
           >
             <DataTable.Cell>{i.name}</DataTable.Cell>
             {listType === 'family' && (
@@ -56,8 +62,16 @@ export default function List({
                   {/* <Checkbox status={i.collected ? 'checked' : 'unchecked'} /> */}
                   {i.collected} / {i.quantity}
                 </DataTable.Cell>
+              </>
+            )}
+            {listType === 'lists' && (
+              <>
                 <DataTable.Cell>
                   <EditShoppingList
+                    familyId={String(i.id)}
+                    listName={String(i.name)}
+                  />
+                  <DeleteShoppingList
                     familyId={String(i.id)}
                     listName={String(i.name)}
                   />
