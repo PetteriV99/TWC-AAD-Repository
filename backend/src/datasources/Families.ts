@@ -22,6 +22,13 @@ export default class FamilyDataSource {
     return foundFamily;
   }
 
+  async getUserFamilies(userId: string) {
+    const foundFamilies = await this.model.find({
+      $or: [{creator: userId}, {members: userId}]
+    });
+    return foundFamilies;
+  }
+
   async getFamilyLists(familyId: string) {
     const foundFamily = await this.model.findOne({ _id: familyId }).populate('lists');
     return foundFamily?.lists;
@@ -56,6 +63,13 @@ export default class FamilyDataSource {
   }
 
   // INVITES
+  async getUserInvites(userId: string) {
+    const foundFamilies = await this.model.find({
+      invites: userId
+    });
+    return foundFamilies;
+  }
+
   async inviteToFamily(familyId: string, userId: string) {
     const updatedFamily = await this.model.findOneAndUpdate(
       { _id: familyId },
