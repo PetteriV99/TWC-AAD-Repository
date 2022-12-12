@@ -32,8 +32,6 @@ export default function Shopping({ navigation }: any) {
     .map((f: any) => ({ familyId: f._id, lists: f.lists }))
     .flat()
 
-  console.log(allShoppingLists)
-
   const testing = [
     {
       familyId: '63974f596179d0dfca7e15b2',
@@ -48,10 +46,7 @@ export default function Shopping({ navigation }: any) {
         navigation={navigation}
         title='My family shopping lists'
         headers={[{ id: 1, title: 'Name' }]}
-        // items={testing.map((l: any) => ({
-        //   id: l.familyId,
-        //   name: l.name,
-        // }))}
+        // FIXME: TESTING VARIABLE
         items={testing.map((l: any) => ({
           id: l.familyId,
           name: l.name,
