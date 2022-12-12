@@ -1,7 +1,13 @@
 import React, { useState } from 'react'
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from 'react-native'
 
-const CustomModal = ({ buttonName, children }: { buttonName: string, children: React.ReactNode }) => {
+const CustomModal = ({
+  buttonName,
+  children,
+}: {
+  buttonName: string
+  children: React.ReactNode
+}) => {
   const [modalVisible, setModalVisible] = useState(false)
   return (
     <>

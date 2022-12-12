@@ -7,7 +7,7 @@ import {
   Profile,
   Login,
   EditProfile,
-  Register
+  Register,
 } from './screens'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 const Stack = createNativeStackNavigator()
@@ -15,6 +15,7 @@ const Tab = createBottomTabNavigator()
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Appbar, Button, Divider, Menu } from 'react-native-paper'
 import { Platform } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 function MainApp() {
   return (
@@ -88,14 +89,6 @@ function MainApp() {
 }
 
 const Router = () => {
-  const MORE_ICON = Platform.OS === 'ios' ? 'dots-horizontal' : 'dots-vertical'
-  const [visible, setVisible] = React.useState(false)
-
-  // TODO: sign in
-  const isLoggedIn = true
-  const openMenu = () => setVisible(true)
-
-  const closeMenu = () => setVisible(false)
   return (
     <Stack.Navigator
       initialRouteName='Login'
@@ -107,29 +100,17 @@ const Router = () => {
             )}
             <Appbar.Content title='Family Shopping List App' />
 
-            <Menu
-              visible={visible}
-              onDismiss={closeMenu}
-              anchor={<Appbar.Action icon={MORE_ICON} onPress={openMenu} />}
-            >
-              {isLoggedIn ? (
-                <Menu.Item
-                  onPress={() => {
-                    props.navigation.navigate('Login')
-                    closeMenu()
-                  }}
-                  title='Log in'
-                />
-              ) : (
-                <Menu.Item
-                  onPress={() => {
-                    console.log('signed out')
-                    closeMenu()
-                  }}
-                  title='Log out'
-                />
-              )}
-            </Menu>
+            {props.route.name !== 'Login' && (
+              <Button
+                icon='logout'
+                mode='contained'
+                onPress={() => {
+                  props.navigation.navigate('Login')
+                }}
+              >
+                Log out
+              </Button>
+            )}
           </Appbar.Header>
         ),
       }}

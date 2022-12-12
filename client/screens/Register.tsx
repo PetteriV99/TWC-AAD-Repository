@@ -1,9 +1,9 @@
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, ScrollView } from 'react-native'
 import { Button, Divider, Text, TextInput } from 'react-native-paper'
 import * as React from 'react'
 import { gql } from '@apollo/client/core'
 import { useMutation } from '@apollo/client'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const REGISTER = gql`
   mutation signUp($username: String!, $email: String!, $password: String!) {
@@ -19,9 +19,9 @@ export default function Login({ navigation }: any) {
     onCompleted: data => {
       storeToken(data.logIn)
     },
-    onError: (err) => {
+    onError: err => {
       console.log(err)
-    }
+    },
   })
 
   const handleSubmit = () => {
@@ -31,14 +31,16 @@ export default function Login({ navigation }: any) {
   const storeToken = async (value: any) => {
     try {
       const jsonValue = JSON.stringify(value)
-      await AsyncStorage.setItem('AUTH_KEY', jsonValue).then(navigation.navigate('MainApp'))
+      await AsyncStorage.setItem('AUTH_KEY', jsonValue).then(
+        navigation.navigate('MainApp')
+      )
     } catch (e) {
       // saving error
     }
   }
 
   return (
-    <View style={{ marginTop: 50, padding: 20 }}>
+    <ScrollView style={{ marginTop: 50, padding: 20 }}>
       <Text
         style={{ padding: 10, margin: 10, textAlign: 'center', fontSize: 25 }}
       >
@@ -60,13 +62,10 @@ export default function Login({ navigation }: any) {
         onChangeText={text => setPassword(text)}
       />
       <Divider style={{ marginVertical: 20 }} />
-      <Button
-        mode='contained'
-        onPress={handleSubmit}
-      >
+      <Button mode='contained' onPress={handleSubmit}>
         Register
       </Button>
-    </View>
+    </ScrollView>
   )
 }
 

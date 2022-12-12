@@ -1,7 +1,7 @@
 import { gql, useQuery } from '@apollo/client'
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, ScrollView } from 'react-native'
 import { Button } from 'react-native-paper'
 import CustomModal from '../components/CustomModal'
 import List from '../components/List'
@@ -20,7 +20,7 @@ const USER_FAMILIES = gql`
       description
       avatar_url
     }
-  } 
+  }
 `
 
 export default function Family() {
@@ -32,24 +32,34 @@ export default function Family() {
   const families = data.userFamilies
 
   return (
-    <View>
-      <Button mode='contained' onPress={async () => {
+    <ScrollView style={styles.container}>
+      <Button
+        mode='contained'
+        onPress={async () => {
           refetch()
-        }}>Refresh</Button>
+        }}
+      >
+        Refresh
+      </Button>
       <List
         title='My families'
         headers={[{ id: 1, title: 'Name' }]}
-        items={
-          families.map((family: any) => ({
-            id: family._id,
-            name: family.name,
-          }))
-        }
+        items={families.map((family: any) => ({
+          id: family._id,
+          name: family.name,
+        }))}
         listType={'family'}
       />
 
-      <FamilyInvitesModal refetchFamilies={refetch}/>
-      <FamilyCreationModal refetch={refetch}/>
-    </View>
+      <FamilyInvitesModal refetchFamilies={refetch} />
+      <FamilyCreationModal refetch={refetch} />
+    </ScrollView>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 10,
+    margin: 10,
+  },
+})
