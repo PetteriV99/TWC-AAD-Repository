@@ -17,11 +17,11 @@ export default function Login({ navigation }: any) {
   const [username, setUsername] = React.useState('')
   const [register, { data, loading, error }] = useMutation(REGISTER, {
     onCompleted: data => {
-      storeToken(data.logIn)
+      storeToken(data.signUp)
     },
-    onError: err => {
-      console.log(err)
-    },
+    onError: (err) => {
+        console.log(err)
+    }
   })
 
   const handleSubmit = () => {
@@ -35,7 +35,7 @@ export default function Login({ navigation }: any) {
         navigation.navigate('MainApp')
       )
     } catch (e) {
-      // saving error
+      console.log(e)
     }
   }
 
@@ -65,6 +65,13 @@ export default function Login({ navigation }: any) {
       <Button mode='contained' onPress={handleSubmit}>
         Register
       </Button>
+      <Text>
+        {loading
+          ? 'Loading...'
+          : error
+          ? error.graphQLErrors.map(({ message }, i) => {return(<Text key={i}>{message}</Text>)})
+          : data && data.signUp}
+      </Text>
     </ScrollView>
   )
 }

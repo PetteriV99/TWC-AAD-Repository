@@ -8,6 +8,8 @@ import {
   Login,
   EditProfile,
   Register,
+  More,
+  AuthLoading
 } from './screens'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 const Stack = createNativeStackNavigator()
@@ -46,25 +48,25 @@ function MainApp() {
         }}
       />
       <Tab.Screen
-        name='ShoppingList'
+        name='Shopping Lists'
         component={ShoppingList}
         options={{
           headerShown: false,
 
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name='menu' size={24} color={color} />
+            <MaterialCommunityIcons name='shopping' size={24} color={color} />
           ),
         }}
       />
       <Tab.Screen
-        name='Profile'
-        component={Profile}
+        name='More'
+        component={More}
         options={{
           headerShown: false,
 
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
-              name='human-greeting-variant'
+              name='menu'
               size={24}
               color={color}
             />
@@ -89,35 +91,27 @@ function MainApp() {
 }
 
 const Router = () => {
+  const MORE_ICON = Platform.OS === 'ios' ? 'dots-horizontal' : 'dots-vertical'
+
   return (
     <Stack.Navigator
-      initialRouteName='Login'
+      initialRouteName='AuthLoading'
       screenOptions={{
         header: props => (
           <Appbar.Header>
-            {props.back && props.route.name !== 'MainApp' && (
+              {props.back && (props.route.name !== 'Login') && (props.route.name !== 'MainApp') && (
               <Appbar.BackAction onPress={props.navigation.goBack} />
             )}
             <Appbar.Content title='Family Shopping List App' />
-
-            {props.route.name !== 'Login' && (
-              <Button
-                icon='logout'
-                mode='contained'
-                onPress={() => {
-                  props.navigation.navigate('Login')
-                }}
-              >
-                Log out
-              </Button>
-            )}
           </Appbar.Header>
         ),
       }}
     >
-      <Stack.Screen name='MainApp' component={MainApp} />
+      <Stack.Screen name="AuthLoading" component={AuthLoading}/>
       <Stack.Screen name='Login' component={Login} />
       <Stack.Screen name='Register' component={Register} />
+      <Stack.Screen name='MainApp' component={MainApp} />
+      <Stack.Screen name='Profile' component={Profile} />
       <Stack.Screen name='EditProfile' component={EditProfile} />
     </Stack.Navigator>
   )

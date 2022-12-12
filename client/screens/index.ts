@@ -6,5 +6,7 @@ import Profile from './Profile';
 import Login from './Login';
 import EditProfile from './EditProfile';
 import Register from './Register'
+import More from './More'
+import AuthLoading from './AuthLoading';
 
-export {ShoppingList, Home, Family, Profile, Login,EditProfile, Register, };
+export {ShoppingList, Home, Family, Profile, Login,EditProfile, Register, More, AuthLoading };

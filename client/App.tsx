@@ -15,11 +15,22 @@ import {
 } from '@apollo/client'
 import { ApolloProvider } from '@apollo/client/react'
 import { setContext } from '@apollo/client/link/context'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { onError } from "@apollo/client/link/error";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const httpLink = new HttpLink({
   uri: 'http://169.254.123.230:4000/',
 })
+
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.forEach(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    );
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
 
 const authLink = setContext(async (_, { headers }) => {
   const token = await AsyncStorage.getItem('AUTH_KEY')
@@ -33,9 +44,9 @@ const authLink = setContext(async (_, { headers }) => {
 })
 
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
-})
+  link: ApolloLink.from([errorLink, authLink.concat(httpLink)]),
+  cache: new InMemoryCache()
+});
 
 const DarkMode = React.createContext('')
 
