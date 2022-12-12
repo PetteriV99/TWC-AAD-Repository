@@ -3,6 +3,7 @@ import { Button, Divider, Text, TextInput } from 'react-native-paper'
 import * as React from 'react'
 import { gql } from '@apollo/client/core'
 import { useMutation } from '@apollo/client'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const REGISTER = gql`
   mutation signUp($username: String!, $email: String!, $password: String!) {
@@ -14,7 +15,27 @@ export default function Login({ navigation }: any) {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [username, setUsername] = React.useState('')
-  const [register, { data, loading, error }] = useMutation(REGISTER)
+  const [register, { data, loading, error }] = useMutation(REGISTER, {
+    onCompleted: data => {
+      storeToken(data.logIn)
+    },
+    onError: (err) => {
+      console.log(err)
+    }
+  })
+
+  const handleSubmit = () => {
+    register({ variables: { username, email, password } })
+  }
+
+  const storeToken = async (value: any) => {
+    try {
+      const jsonValue = JSON.stringify(value)
+      await AsyncStorage.setItem('AUTH_KEY', jsonValue).then(navigation.navigate('MainApp'))
+    } catch (e) {
+      // saving error
+    }
+  }
 
   return (
     <View style={{ marginTop: 50, padding: 20 }}>
@@ -41,9 +62,7 @@ export default function Login({ navigation }: any) {
       <Divider style={{ marginVertical: 20 }} />
       <Button
         mode='contained'
-        onPress={async () => {
-          register({ variables: { username, email, password } })
-        }}
+        onPress={handleSubmit}
       >
         Register
       </Button>
