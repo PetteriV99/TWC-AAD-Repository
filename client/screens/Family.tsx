@@ -33,6 +33,9 @@ export default function Family() {
 
   return (
     <View>
+      <Button mode='contained' onPress={async () => {
+          refetch()
+        }}>Refresh</Button>
       <List
         title='My families'
         headers={[{ id: 1, title: 'Name' }]}
@@ -50,16 +53,3 @@ export default function Family() {
     </View>
   )
 }
-
-// make better? pls
-const styles = StyleSheet.create({
-  buttons: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    margin: 10,
-  },
-
-  invites: {
-    margin: 10,
-  },
-})

@@ -12,6 +12,21 @@ const UPDATE_FAMILY = gql`
   }
 `
 
+const DELETE_FAMILY = gql`
+  mutation DeleteFamily($familyId: ID!) {
+    deleteFamily(familyId: $familyId) {
+      _id
+      name
+      creator
+      members
+      lists
+      invites
+      description
+      avatar_url
+    }
+  }
+`
+
 const GET_FAMILY = gql`
   query GetFamily($id: ID!) {
     family(_id: $id) {
@@ -23,7 +38,8 @@ const GET_FAMILY = gql`
 `
 
 export default function FamilyEditModal({ familyId }: { familyId: string }) {
-  const [update] = useMutation(UPDATE_FAMILY)
+  const [updateFamilyMutation] = useMutation(UPDATE_FAMILY)
+  const [deleteFamilyMutation] = useMutation(DELETE_FAMILY)
   const query = useQuery(GET_FAMILY, { variables: { id: familyId } });
 
   const { family } = query.data || {}
@@ -76,13 +92,20 @@ export default function FamilyEditModal({ familyId }: { familyId: string }) {
         />
 
         <Button mode='contained' onPress={async () => {
-          update({ variables: {
+          updateFamilyMutation({ variables: {
             familyId,
             ...name && {name},
             ...description && {description},
             ...avatarUrl && {avatarUrl},
           }})
         }}>Update</Button>
+
+        <Button mode='contained' onPress={async () => {
+          deleteFamilyMutation({ variables: {
+            familyId,
+          }})
+        }}>Delete</Button>
+
       </View>
     </CustomModal>
   )
