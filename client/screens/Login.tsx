@@ -19,7 +19,6 @@ export default function Login({ navigation }: any) {
       storeToken(data.logIn)
     },
     onError: (err) => {
-      console.log(err)
     }
   })
 
@@ -72,7 +71,7 @@ export default function Login({ navigation }: any) {
         {loading
           ? 'Loading...'
           : error
-          ? 'Some error happened'
+          ? error.graphQLErrors.map(({ message }, i) => {return(<Text key={i}>{message}</Text>)})
           : data && data.logIn}
       </Text>
     </View>
