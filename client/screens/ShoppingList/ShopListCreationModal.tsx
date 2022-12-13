@@ -1,19 +1,33 @@
-import { ApolloQueryResult, gql, useMutation } from '@apollo/client'
+import { ApolloQueryResult, gql, useMutation, useQuery } from '@apollo/client'
 import React from 'react'
 import { View, TextInput, Button, StyleSheet, Text } from 'react-native'
 import CustomModal from '../../components/CustomModal'
+import DropDownInput from '../../components/DropDownInput'
 
 const CREATE_SHOPLIST = gql`
-  mutation createShoppingList(
-    $familyId: ID!
+  mutation CreateShoppingList(
+    $createShoppingListFamilyId2: ID!
     $name: String!
     $description: String
   ) {
-    newList(familyId: $familyId, name: $name, description: $description) {
+    createShoppingList(
+      familyId: $createShoppingListFamilyId2
+      name: $name
+      description: $description
+    ) {
+      _id
+      description
+      familyId
+      name
+    }
+  }
+`
+
+const USER_FAMILIES = gql`
+  query UserFamilies {
+    userFamilies(userId: "639059406a914ffbad0f2a49") {
       _id
       name
-      description
-      items
     }
   }
 `
@@ -26,14 +40,22 @@ export default function FamilyCreationModal({
   const [mutateFunction, { data, loading, error }] =
     useMutation(CREATE_SHOPLIST)
 
+  const { data: familyData } = useQuery(USER_FAMILIES)
+
   const [name, setName] = React.useState('')
   const [description, setDescription] = React.useState('')
+  const [family, setFamily] = React.useState({ name: 'None', id: '' })
+
+  const families = familyData.userFamilies.map((uf: any) => ({
+    name: uf.name,
+    id: uf._id,
+  }))
 
   const submit = () => {
     mutateFunction({
       variables: {
         name,
-        familyId: '63974f596179d0dfca7e15b2',
+        createShoppingListFamilyId2: family.id,
         ...(description && { description }),
       },
     })
@@ -53,6 +75,13 @@ export default function FamilyCreationModal({
       <View style={styles.container}>
         <Text style={styles.title}>Add new shopping list</Text>
         <Text style={styles.subtitle}>Fill in the required details</Text>
+        <Text>Selected family: {family.name}</Text>
+        <DropDownInput
+          title='Select family'
+          items={families}
+          setFunc={setFamily}
+        />
+
         <TextInput
           style={styles.input}
           placeholder='Shopping list name *'

@@ -29,16 +29,15 @@ export default function Shopping({ navigation }: any) {
   const families = data.userFamilies
 
   let allShoppingLists = families
-    .map((f: any) => ({ familyId: f._id, lists: f.lists }))
+    .map((f: any) =>
+      f.lists.map((l: any, i: number) => ({
+        key: f._id + i,
+        familyId: f._id,
+        name: l,
+      }))
+    )
     .flat()
-
-  const testing = [
-    {
-      familyId: '63974f596179d0dfca7e15b2',
-      lists: [{}],
-      name: 'listan nimi',
-    },
-  ]
+  console.log(families)
 
   return (
     <ScrollView style={styles.container}>
@@ -47,8 +46,8 @@ export default function Shopping({ navigation }: any) {
         title='My family shopping lists'
         headers={[{ id: 1, title: 'Name' }]}
         // FIXME: TESTING VARIABLE
-        items={testing.map((l: any) => ({
-          id: l.familyId,
+        items={allShoppingLists.map((l: any) => ({
+          id: l.key,
           name: l.name,
         }))}
         listType={'lists'}
