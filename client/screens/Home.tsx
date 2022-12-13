@@ -35,9 +35,6 @@ export default function Home({ route, navigation }: any) {
     checked: boolean
   }>({ id: 0, checked: true })
 
-  if (loading) return <Text>Loading...</Text>
-  if (error) return <Text>{error.message}</Text>
-
   const families = route?.params?.listName ? data.userFamilies : []
 
   const currentList = route?.params?.listName ?? 'No selected list'
@@ -54,6 +51,9 @@ export default function Home({ route, navigation }: any) {
       setCheckedList(newlist)
     }
   }, [pressed])
+
+  if (loading) return <Text>Loading...</Text>
+  if (error) return <Text>{error.message}</Text>
 
   return (
     <ScrollView style={styles.container}>
