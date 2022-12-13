@@ -14,8 +14,10 @@ export default function List({
   headers,
   items,
   listType,
+  setFunc,
 }: {
   navigation?: any
+  setFunc?: (arg: any) => void
   title: string
   headers: { id: number; title: string }[]
   items: {
@@ -44,10 +46,12 @@ export default function List({
         {items.map(i => (
           <DataTable.Row
             key={i.id}
-            onPress={() =>
+            onPress={() => {
               listType === 'lists' &&
-              navigation.navigate('Home', { listName: i.name })
-            }
+                navigation.navigate('Home', { listName: i.name })
+
+              listType === 'shopping' && setFunc !== undefined && setFunc(i)
+            }}
           >
             <DataTable.Cell>{i.name}</DataTable.Cell>
             {listType === 'family' && (

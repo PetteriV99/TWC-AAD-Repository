@@ -20,16 +20,6 @@ const USER_FAMILIES = gql`
   }
 `
 
-// const GET_SHOPLIST = gql`
-//   query GetShoplist($id: ID!) {
-//     shoplist(_id: $id) {
-//       name
-//       description
-//       avatar_url
-//     }
-//   }
-// `
-
 export default function Home({ route, navigation }: any) {
   const { loading, error, data, refetch } = useQuery(USER_FAMILIES)
 
@@ -41,7 +31,31 @@ export default function Home({ route, navigation }: any) {
   const currentList = route?.params?.listName ?? 'No selected list'
   // const query = useQuery(GET_SHOPLIST, { variables: { id: currentList } })
 
-  // console.log('yetgfd', query)
+  // TODO: get items from actual shopping list
+  const testshoplist = [
+    { checked: true, name: 'tomat', id: 1 },
+    { checked: false, name: 'apels', id: 2 },
+  ]
+
+  const [checkedList, setCheckedList] = React.useState([...testshoplist])
+
+  const [pressed, setPressed] = React.useState<{
+    id: number
+    checked: boolean
+  }>({ id: 0, checked: true })
+
+  React.useEffect(() => {
+    const found = checkedList.findIndex(it => it.id === pressed.id)
+
+    if (found !== -1) {
+      const newlist = [...checkedList]
+
+      newlist[found] = { ...newlist[found], checked: !newlist[found].checked }
+
+      setCheckedList(newlist)
+    }
+  }, [pressed])
+
   return (
     <ScrollView style={styles.container}>
       <List
@@ -50,11 +64,13 @@ export default function Home({ route, navigation }: any) {
           { id: 1, title: 'Name' },
           { id: 2, title: 'Collected' },
         ]}
-        items={families.map((family: any) => ({
-          id: family._id,
-          name: family.name,
+        items={checkedList.map((item: any) => ({
+          id: item.id,
+          name: item.name,
+          collected: item.checked,
         }))}
         listType={'shopping'}
+        setFunc={setPressed}
       />
 
       {route?.params?.listName === undefined && (
