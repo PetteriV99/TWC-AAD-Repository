@@ -15,8 +15,9 @@ export default function Login({ navigation }: any) {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [username, setUsername] = React.useState('')
-  const [register, { data, loading, error }] = useMutation(REGISTER, {
+  const [register, { data, loading, error, client }] = useMutation(REGISTER, {
     onCompleted: data => {
+      client.resetStore()
       storeToken(data.signUp)
     },
     onError: (err) => {
@@ -31,9 +32,10 @@ export default function Login({ navigation }: any) {
   const storeToken = async (value: any) => {
     try {
       const jsonValue = JSON.stringify(value)
-      await AsyncStorage.setItem('AUTH_KEY', jsonValue).then(
+      await AsyncStorage.setItem('AUTH_KEY', jsonValue).then(() => {
+        navigation.popToTop()
         navigation.navigate('MainApp')
-      )
+      })
     } catch (e) {
       console.log(e)
     }
