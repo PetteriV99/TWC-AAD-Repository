@@ -19,7 +19,8 @@ import { onError } from "@apollo/client/link/error";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const httpLink = new HttpLink({
-  uri: 'http://169.254.123.230:4000/',
+  // uri: 'http://169.254.123.230:4000/',
+  uri: 'http://10.0.2.2:4000', // for android emulator
 })
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
