@@ -1,4 +1,4 @@
-import { StyleSheet, ScrollView, View } from 'react-native'
+import { StyleSheet, ScrollView, View, Text } from 'react-native'
 import { Button } from 'react-native-paper'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -16,14 +16,22 @@ export default function More({ navigation }: any) {
             <Button
                 onPress={() => navigation.navigate('Profile')}
                 mode='contained'
+                style={styles.button}
             >
-                My Profile
+                Profile
+            </Button>
+            <Button
+                onPress={() => navigation.navigate('Profile')}
+                mode='contained'
+                style={styles.button}
+            >
+                Settings
             </Button>
             <View style={styles.bottom}>
                 <Button
                     onPress={signOut}
                     mode='contained'
-                    style={styles.logButton}
+                    style={styles.button}
                 >
                     Log out
                 </Button>
@@ -44,6 +52,12 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         marginBottom: 36
     },
-    logButton: {
+    button: {
+        padding: 5,
+        margin: 5,
+        marginTop: 20
+    },
+    text: {
+        padding: 10, margin: 10, textAlign: 'left', fontSize: 18
     }
 })
