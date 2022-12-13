@@ -46,6 +46,7 @@ type Query {
 
   userFamilies(userId: ID!): [Family]
   userInvites: [Family]
+  userFamilyLists: [ShoppingList]
 }
 
 type Mutation {

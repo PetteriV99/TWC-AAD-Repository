@@ -34,6 +34,20 @@ export default class FamilyDataSource {
     return foundFamily?.lists;
   }
 
+  async getUserFamilyLists(userId: string) {
+    const foundFamilies = await this.model.find({
+      $or: [{creator: userId}, {members: userId}]
+    });
+
+    let foundLists = new Array;
+    
+    for (const family of foundFamilies) {
+      foundLists.push(await this.model.findOne({ _id: family._id }).populate('lists'));;
+    };
+
+    return foundLists;
+  }
+
   async createFamily({ name, creator, description, avatar_url}: Pick<FamilyDocument, 'name' | 'creator' | 'description' | 'avatar_url'>) {
     const newFamily = new this.model({
       name,
