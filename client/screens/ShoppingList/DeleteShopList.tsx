@@ -28,17 +28,17 @@ const GET_SHOPPING_LISTS = gql`
   }
 `
 
-export default function EditShoppingList({
-  familyId,
-  listName,
+export default function DeleteShopList({
+  route, navigation: { navigate },
 }: {
-  familyId: string
-  listName: string
+  route: any, navigation: any
 }) {
   const [deleteList] = useMutation(DELETE_SHOPPING_LIST)
   const query = useQuery(GET_SHOPPING_LISTS, {
-    variables: { familyId: familyId },
+    variables: { familyId: route.params.familyId },
   })
+
+  const listName = route.params.listName
 
   const { familyLists } = query.data || {}
   console.log('yoo', listName)
@@ -62,45 +62,43 @@ export default function EditShoppingList({
   // Maybe add some input validations here
 
   return (
-    <CustomModal buttonName='Delete'>
-      <View style={styles.container}>
-        <Text style={styles.title}>Delete shopping list</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Delete shopping list</Text>
 
-        <View
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          padding: 10,
+          margin: 10,
+        }}
+      >
+        <Button
+          mode='contained'
+          onPress={async () => {}}
           style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            padding: 10,
-            margin: 10,
+            margin: 5,
           }}
         >
-          <Button
-            mode='contained'
-            onPress={async () => {}}
-            style={{
-              margin: 5,
-            }}
-          >
-            No
-          </Button>
-          <Button
-            style={{
-              margin: 5,
-            }}
-            mode='contained'
-            onPress={async () => {
-              deleteList({
-                variables: {
-                  listId: listName,
-                },
-              })
-            }}
-          >
-            Yes
-          </Button>
-        </View>
+          No
+        </Button>
+        <Button
+          style={{
+            margin: 5,
+          }}
+          mode='contained'
+          onPress={async () => {
+            deleteList({
+              variables: {
+                listId: listName,
+              },
+            })
+          }}
+        >
+          Yes
+        </Button>
       </View>
-    </CustomModal>
+    </View>
   )
 }
 

@@ -1,6 +1,7 @@
 import { ApolloQueryResult, gql, useMutation, useQuery } from '@apollo/client'
 import React from 'react'
-import { View, TextInput, Button, StyleSheet, Text } from 'react-native'
+import { View, TextInput, StyleSheet, Text } from 'react-native'
+import { Button } from 'react-native-paper'
 import CustomModal from '../../components/CustomModal'
 import DropDownInput from '../../components/DropDownInput'
 
@@ -32,10 +33,10 @@ const USER_FAMILIES = gql`
   }
 `
 
-export default function FamilyCreationModal({
-  refetch,
+export default function CreateShopList({
+  navigation: { navigate },
 }: {
-  refetch: () => Promise<ApolloQueryResult<any>>
+  navigation: any
 }) {
   const [mutateFunction, { data, loading, error }] =
     useMutation(CREATE_SHOPLIST)
@@ -51,57 +52,53 @@ export default function FamilyCreationModal({
     id: uf._id,
   }))
 
-  const submit = () => {
-    mutateFunction({
+  const submit = async () => {
+    await mutateFunction({
       variables: {
         name,
         createShoppingListFamilyId2: family.id,
         ...(description && { description }),
       },
     })
+    navigate('MainApp', { refetch: true })
   }
-
-  React.useEffect(() => {
-    if (data) {
-      refetch()
-    }
-  }, [data])
 
   if (loading) return <Text>Loading...</Text>
   if (error) return <Text>{error.message}</Text>
 
   return (
-    <CustomModal buttonName='Add new shopping list'>
-      <View style={styles.container}>
-        <Text style={styles.title}>Add new shopping list</Text>
-        <Text style={styles.subtitle}>Fill in the required details</Text>
-        <Text>Selected family: {family.name}</Text>
-        <DropDownInput
-          title='Select family'
-          items={families}
-          setFunc={setFamily}
-        />
+    <View style={styles.container}>
+      <Text style={styles.title}>Add new shopping list</Text>
+      <Text style={styles.subtitle}>Fill in the required details</Text>
+      <Text>Selected family: {family.name}</Text>
+      <DropDownInput
+        style={styles.dropdown}
+        title='Select family'
+        items={families}
+        setFunc={setFamily}
+      />
 
-        <TextInput
-          style={styles.input}
-          placeholder='Shopping list name *'
-          placeholderTextColor='#A9A9A9'
-          onChangeText={text => setName(text)}
-          value={name}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder='Shopping list description'
-          placeholderTextColor='#A9A9A9'
-          onChangeText={text => setDescription(text)}
-          value={description}
-        />
+      <TextInput
+        style={styles.input}
+        placeholder='Shopping list name *'
+        placeholderTextColor='#A9A9A9'
+        onChangeText={text => setName(text)}
+        value={name}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder='Shopping list description'
+        placeholderTextColor='#A9A9A9'
+        onChangeText={text => setDescription(text)}
+        value={description}
+      />
 
-        <View style={styles.buttonContainer}>
-          <Button title='Create' onPress={() => submit()} />
-        </View>
+      <View style={styles.buttonContainer}>
+        <Button mode='contained' onPress={() => submit()}>
+          Create
+        </Button>
       </View>
-    </CustomModal>
+    </View>
   )
 }
 
@@ -132,5 +129,9 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: 300,
     marginTop: 10,
+  },
+  dropdown: {
+    width: 300,
+    marginBottom: 10,
   },
 })

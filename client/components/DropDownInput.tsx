@@ -6,10 +6,12 @@ const DropDownInput = ({
   title,
   items,
   setFunc,
+  style,
 }: {
   title: string
   items: any[]
   setFunc: (arg: any) => any
+  style?: any
 }) => {
   const [visible, setVisible] = React.useState(false)
 
@@ -17,6 +19,7 @@ const DropDownInput = ({
 
   return (
     <List.Accordion
+      style={style}
       title={title}
       left={props => <List.Icon {...props} icon='family-tree' />}
       expanded={visible}

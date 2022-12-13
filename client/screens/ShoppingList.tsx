@@ -4,7 +4,7 @@ import { Button, Checkbox } from 'react-native-paper'
 import List from '../components/List'
 import { gql, useQuery } from '@apollo/client'
 import EditShoppingList from './ShoppingList/EditShoppingList'
-import ShopListCreationModal from './ShoppingList/ShopListCreationModal'
+import ShopListCreationModal from './ShoppingList/CreateShopList'
 
 const FAMILY_SHOPPING_LISTS = gql`
   query UserFamilies {
@@ -21,7 +21,7 @@ const FAMILY_SHOPPING_LISTS = gql`
   }
 `
 
-export default function Shopping({ navigation }: any) {
+export default function ShoppingList({ route, navigation }: { route: any; navigation: any }) {
   const { loading, error, data, refetch } = useQuery(FAMILY_SHOPPING_LISTS)
 
   if (loading) return <Text>Loading...</Text>
@@ -32,6 +32,7 @@ export default function Shopping({ navigation }: any) {
   const allShoppingLists = families
     .map((f: any) =>
       f.lists.map((l: any, i: number) => ({
+        
         key: f._id + i,
         familyId: f._id,
         name: l,
@@ -61,7 +62,9 @@ export default function Shopping({ navigation }: any) {
         listType={'lists'}
       />
 
-      <ShopListCreationModal refetch={refetch} />
+      <Button style={styles.button} mode='contained' onPress={() => navigation.navigate('CreateShopList')}>
+        Create new shopping list
+      </Button>
     </ScrollView>
   )
 }
@@ -70,5 +73,8 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
     margin: 10,
+  },
+  button: {
+    marginTop: 10,
   },
 })

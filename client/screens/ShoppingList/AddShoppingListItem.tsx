@@ -70,44 +70,42 @@ export default function AddShoppingListItem({
   // }, [shoplist])
   console.log('shoplist id', shoplistId)
   return (
-    <CustomModal buttonName='Add'>
-      <View style={styles.container}>
-        <Text style={styles.title}>Add shopping list item</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Add shopping list item</Text>
 
-        <Text>Name:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder='Shoplist name *'
-          placeholderTextColor='#A9A9A9'
-          onChangeText={text => setName(text)}
-          value={name}
-        />
+      <Text>Name:</Text>
+      <TextInput
+        style={styles.input}
+        placeholder='Shoplist name *'
+        placeholderTextColor='#A9A9A9'
+        onChangeText={text => setName(text)}
+        value={name}
+      />
 
-        <Text>Quantity</Text>
-        <TextInput
-          style={styles.input}
-          placeholder='Quantity'
-          placeholderTextColor='#A9A9A9'
-          onChangeText={text => setQuantity(text)}
-          value={quantity}
-        />
+      <Text>Quantity</Text>
+      <TextInput
+        style={styles.input}
+        placeholder='Quantity'
+        placeholderTextColor='#A9A9A9'
+        onChangeText={text => setQuantity(text)}
+        value={quantity}
+      />
 
-        <Button
-          mode='contained'
-          // onPress={async () => {
-          //   updateShoplistMutation({
-          //     variables: {
-          //       shoplistId,
-          //       ...(name && { name }),
-          //       ...(description && { description }),
-          //     },
-          //   })
-          // }}
-        >
-          Add
-        </Button>
-      </View>
-    </CustomModal>
+      <Button
+        mode='contained'
+        // onPress={async () => {
+        //   updateShoplistMutation({
+        //     variables: {
+        //       shoplistId,
+        //       ...(name && { name }),
+        //       ...(description && { description }),
+        //     },
+        //   })
+        // }}
+      >
+        Add
+      </Button>
+    </View>
   )
 }
 

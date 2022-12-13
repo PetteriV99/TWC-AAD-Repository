@@ -70,46 +70,44 @@ export default function EditShoppingList({
   // Maybe add some input validations here
 
   return (
-    <CustomModal buttonName='Edit'>
-      <View style={styles.container}>
-        <Text style={styles.title}>Edit shopping list details</Text>
-        <Text>Name:</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Edit shopping list details</Text>
+      <Text>Name:</Text>
 
-        <TextInput
-          style={styles.input}
-          placeholder='List name *'
-          placeholderTextColor='#A9A9A9'
-          value={name}
-          onChangeText={text => setName(text)}
-        />
+      <TextInput
+        style={styles.input}
+        placeholder='List name *'
+        placeholderTextColor='#A9A9A9'
+        value={name}
+        onChangeText={text => setName(text)}
+      />
 
-        <Text>Description</Text>
+      <Text>Description</Text>
 
-        <TextInput
-          style={styles.input}
-          placeholder='Description'
-          placeholderTextColor='#A9A9A9'
-          value={description}
-          onChangeText={text => setDescription(text)}
-        />
+      <TextInput
+        style={styles.input}
+        placeholder='Description'
+        placeholderTextColor='#A9A9A9'
+        value={description}
+        onChangeText={text => setDescription(text)}
+      />
 
-        <Button
-          mode='contained'
-          onPress={async () => {
-            update({
-              variables: {
-                listId,
-                ...(name && { name }),
-                ...(description && { description }),
-              },
-            })
-          }}
-        >
-          Update
-        </Button>
-        <AddShoppingListItem shoplistId={listId} />
-      </View>
-    </CustomModal>
+      <Button
+        mode='contained'
+        onPress={async () => {
+          update({
+            variables: {
+              listId,
+              ...(name && { name }),
+              ...(description && { description }),
+            },
+          })
+        }}
+      >
+        Update
+      </Button>
+      <AddShoppingListItem shoplistId={listId} />
+    </View>
   )
 }
 

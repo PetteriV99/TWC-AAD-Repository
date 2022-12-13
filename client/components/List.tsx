@@ -5,7 +5,7 @@ import FamilyEditModal from '../screens/EditFamily'
 import { ApolloQueryResult } from '@apollo/client'
 import FamilyCreateInviteModal from '../screens/CreateInvite'
 import EditShoppingList from '../screens/ShoppingList/EditShoppingList'
-import DeleteShoppingList from '../screens/ShoppingList/DeleteShoppingList'
+import DeleteShoppingList from '../screens/ShoppingList/DeleteShopList'
 import AddShoppingListItem from '../screens/ShoppingList/AddShoppingListItem'
 
 export default function List({
@@ -72,14 +72,12 @@ export default function List({
             {listType === 'lists' && (
               <>
                 <DataTable.Cell>
-                  <EditShoppingList
-                    familyId={String(i.familyId)}
-                    listName={String(i.name)}
-                  />
-                  <DeleteShoppingList
-                    familyId={String(i.familyId)}
-                    listName={String(i.name)}
-                  />
+                  <Button onPress={() => navigation.navigate('EditShopListDetails', { shoplistId: i.name })}>
+                    Edit
+                  </Button>
+                  <Button onPress={() => navigation.navigate('DeleteShopList', { shoplistId: i.name })}>
+                    Delete
+                  </Button>
                 </DataTable.Cell>
               </>
             )}

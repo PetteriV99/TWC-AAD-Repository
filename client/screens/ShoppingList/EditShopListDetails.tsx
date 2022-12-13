@@ -38,22 +38,24 @@ const DELETE_SHOPLIST = gql`
 `
 
 const GET_SHOPLIST = gql`
-  query GetShoplist($id: ID!) {
-    shoplist(_id: $id) {
+  query ShoppingList($id: ID!) {
+    shoppingList(_id: $id) {
+      _id
       name
       description
-      avatar_url
     }
   }
 `
 
 export default function ShoplistEditModal({
-  shoplistId,
+  route, navigation: { navigate },
 }: {
-  shoplistId: string
+  route: any, navigation: any
 }) {
   const [updateShoplistMutation] = useMutation(UPDATE_SHOPLIST)
   const [deleteShoplistMutation] = useMutation(DELETE_SHOPLIST)
+  const shoplistId = route.params.shoplistId
+  console.log(shoplistId)
   const query = useQuery(GET_SHOPLIST, { variables: { id: shoplistId } })
 
   const { shoplist } = query.data || {}
@@ -66,7 +68,6 @@ export default function ShoplistEditModal({
     if (shoplist) {
       setName(shoplist.name)
       setDescription(shoplist.description)
-      setAvatarUrl(shoplist.avatar_url)
     }
   }, [shoplist])
 
@@ -74,67 +75,56 @@ export default function ShoplistEditModal({
   if (query.error) return <Text>{query.error.message}</Text>
 
   return (
-    <CustomModal buttonName='Edit'>
-      <View style={styles.container}>
-        <Text style={styles.title}>Edit Shoplist details</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Edit Shoplist details</Text>
 
-        <Text>Name:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder='Shoplist name *'
-          placeholderTextColor='#A9A9A9'
-          onChangeText={text => setName(text)}
-          value={name}
-        />
+      <Text>Name:</Text>
+      <TextInput
+        style={styles.input}
+        placeholder='Shoplist name *'
+        placeholderTextColor='#A9A9A9'
+        onChangeText={text => setName(text)}
+        value={name}
+      />
 
-        <Text>Description</Text>
-        <TextInput
-          style={styles.input}
-          placeholder='Description'
-          placeholderTextColor='#A9A9A9'
-          onChangeText={text => setDescription(text)}
-          value={description}
-        />
+      <Text>Description</Text>
+      <TextInput
+        style={styles.input}
+        placeholder='Description'
+        placeholderTextColor='#A9A9A9'
+        onChangeText={text => setDescription(text)}
+        value={description}
+      />
 
-        <Text>Avatar URL</Text>
-        <TextInput
-          style={styles.input}
-          placeholder='Avatar URL'
-          placeholderTextColor='#A9A9A9'
-          onChangeText={text => setAvatarUrl(text)}
-          value={avatarUrl}
-        />
+      <Button
+        mode='contained'
+        onPress={async () => {
+          updateShoplistMutation({
+            variables: {
+              shoplistId,
+              ...(name && { name }),
+              ...(description && { description }),
+              ...(avatarUrl && { avatarUrl }),
+            },
+          })
+        }}
+      >
+        Update
+      </Button>
 
-        <Button
-          mode='contained'
-          onPress={async () => {
-            updateShoplistMutation({
-              variables: {
-                shoplistId,
-                ...(name && { name }),
-                ...(description && { description }),
-                ...(avatarUrl && { avatarUrl }),
-              },
-            })
-          }}
-        >
-          Update
-        </Button>
-
-        <Button
-          mode='contained'
-          onPress={async () => {
-            deleteShoplistMutation({
-              variables: {
-                shoplistId,
-              },
-            })
-          }}
-        >
-          Delete
-        </Button>
-      </View>
-    </CustomModal>
+      <Button
+        mode='contained'
+        onPress={async () => {
+          deleteShoplistMutation({
+            variables: {
+              shoplistId,
+            },
+          })
+        }}
+      >
+        Delete
+      </Button>
+    </View>
   )
 }
 
