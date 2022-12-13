@@ -44,7 +44,7 @@ export type Mutation = {
   updateFamily: Family;
   updateItemInShoppingList: ShoppingList;
   updateShoppingList: ShoppingList;
-  updateUser: Scalars['String'];
+  updateUser: User;
 };
 
 
@@ -153,14 +153,14 @@ export type MutationUpdateShoppingListArgs = {
 
 
 export type MutationUpdateUserArgs = {
-  avatar_url?: InputMaybe<Scalars['String']>;
-  first_name?: InputMaybe<Scalars['String']>;
-  last_name?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  password?: InputMaybe<Scalars['String']>;
   username?: InputMaybe<Scalars['String']>;
 };
 
 export type Query = {
   __typename?: 'Query';
+  currentUser?: Maybe<User>;
   families?: Maybe<Array<Maybe<Family>>>;
   family?: Maybe<Family>;
   familyLists?: Maybe<Array<Maybe<ShoppingList>>>;
@@ -347,10 +347,11 @@ export type MutationResolvers<ContextType = ServerContext, ParentType extends Re
   updateFamily?: Resolver<ResolversTypes['Family'], ParentType, ContextType, RequireFields<MutationUpdateFamilyArgs, 'familyId'>>;
   updateItemInShoppingList?: Resolver<ResolversTypes['ShoppingList'], ParentType, ContextType, RequireFields<MutationUpdateItemInShoppingListArgs, 'currentName' | 'listId'>>;
   updateShoppingList?: Resolver<ResolversTypes['ShoppingList'], ParentType, ContextType, RequireFields<MutationUpdateShoppingListArgs, 'listId'>>;
-  updateUser?: Resolver<ResolversTypes['String'], ParentType, ContextType, Partial<MutationUpdateUserArgs>>;
+  updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, Partial<MutationUpdateUserArgs>>;
 }>;
 
 export type QueryResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+  currentUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   families?: Resolver<Maybe<Array<Maybe<ResolversTypes['Family']>>>, ParentType, ContextType>;
   family?: Resolver<Maybe<ResolversTypes['Family']>, ParentType, ContextType, Partial<QueryFamilyArgs>>;
   familyLists?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShoppingList']>>>, ParentType, ContextType, RequireFields<QueryFamilyListsArgs, 'familyId'>>;

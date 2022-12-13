@@ -16,7 +16,7 @@ If starting development with hot-reload:
 
 # Features implemented
 
-**Total points from implemented features:** 24/40 points (With extras: 29(30?)/40)
+**Total points from implemented features:** 25/40 points (With extras: 29(30?)/40)
 <br><br>
 
 ## **Backend** (points: 14/15)
@@ -33,11 +33,11 @@ If starting development with hot-reload:
 
 <br><br>
 
-## **Frontend** (points: 10/25)
+## **Frontend** (points: 11/25)
 <br>
 
   - [x] a user can sign-up the application (2 points)
-  - [ ] a user can view and change their own user information (1 point)
+  - [x] a user can view and change their own user information (1 point)
   - [x] a user can login and logout the application (2 points)
   - [x] a user can add families, and modify, delete, and view families they belong to (3 points)
   - [x] a user can invite other users into their families (2 points)

@@ -7,6 +7,15 @@ const queries: QueryResolvers = {
       return data;
     },
 
+    currentUser: async (_, __, { dataSources, user }) => {
+      if (!user) {
+        throw new Error('You must be logged in');
+      }
+
+      const data = await dataSources.users.getUserById(user.id);
+      return data;
+    },
+
     // FAMILY RELATED QUERIES
     families: async (_, __, contextValue) => {
       const data = await contextValue.dataSources.families.getFamilies();

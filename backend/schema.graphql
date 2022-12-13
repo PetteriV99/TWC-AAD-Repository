@@ -35,6 +35,7 @@ type ShoppingItem {
 
 type Query {
   users: [User]
+  currentUser: User
 
   shoppingList(_id: ID!): ShoppingList
   
@@ -49,7 +50,7 @@ type Query {
 type Mutation {
   signUp(username: String!, email: String!, password: String!, first_name: String, last_name: String, avatar_url: String): String!
   logIn(username: String, email: String, password: String!): String!
-  updateUser(username: String, first_name: String, last_name: String, avatar_url: String): String!
+  updateUser(username: String, email: String, password: String): User!
 
   createFamily(name: String!, description: String, avatar_url: String): Family!
   updateFamily(familyId: ID!, name: String, description: String, avatar_url: String): Family!

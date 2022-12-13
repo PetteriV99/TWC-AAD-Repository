@@ -1,14 +1,38 @@
+import React from 'react'
+
+import { gql, useQuery } from '@apollo/client'
 import { StyleSheet, Text, View } from 'react-native'
 import { Button, Card, Checkbox, Paragraph, Title } from 'react-native-paper'
 
-export default function Profile({ navigation }: any) {
+const CURRENT_USER = gql`
+  query CurrentUser {
+    currentUser {
+      id
+      username
+      email
+    }
+  }
+`
+
+export default function Profile({ route, navigation,  }: any) {
+  const { data, loading, error, refetch } = useQuery(CURRENT_USER)
+
+  React.useEffect(() => {
+    if (route.params?.refetch) {
+      refetch()
+    }
+  }, [route])
+
+  if (loading) return <Text>Loading...</Text>
+  if (error) return <Text>Error: {error.message}</Text>
+
   return (
     <View style={styles.container}>
       <Card>
         <Card.Content>
           <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
-          <Title>Käyttäjän nimi</Title>
-          <Paragraph>Sähköposti</Paragraph>
+          <Title>{data.currentUser.username}</Title>
+          <Paragraph>{data.currentUser.email}</Paragraph>
         </Card.Content>
       </Card>
 
