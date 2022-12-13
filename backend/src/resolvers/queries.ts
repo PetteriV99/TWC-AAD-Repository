@@ -101,7 +101,17 @@ const queries: QueryResolvers = {
 
       const data = await dataSources.shoppingLists.getShoppingList(_id);
       return data;
-    }
+    },
+
+    userFamilyLists: async (_, __, { dataSources, user }) => {
+      if (!user) {
+        throw new Error('You must be logged in');
+      }
+
+      const families = await dataSources.families.getUserFamilyLists(user.id);
+
+      return families;
+    },
   },
 };
 
