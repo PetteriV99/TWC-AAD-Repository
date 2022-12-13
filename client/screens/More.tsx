@@ -21,7 +21,7 @@ export default function More({ navigation }: any) {
                 Profile
             </Button>
             <Button
-                onPress={() => navigation.navigate('Profile')}
+                onPress={() => navigation.navigate('Settings')}
                 mode='contained'
                 style={styles.button}
             >

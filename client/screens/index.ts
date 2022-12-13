@@ -8,5 +8,6 @@ import EditProfile from './EditProfile';
 import Register from './Register'
 import More from './More'
 import AuthLoading from './AuthLoading';
+import Settings from './Settings'
 
-export {ShoppingList, Home, Family, Profile, Login,EditProfile, Register, More, AuthLoading };
+export {ShoppingList, Home, Family, Profile, Login,EditProfile, Register, More, AuthLoading, Settings };
