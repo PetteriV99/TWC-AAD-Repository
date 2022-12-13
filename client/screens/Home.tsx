@@ -20,8 +20,20 @@ const USER_FAMILIES = gql`
   }
 `
 
+// TODO: get items from actual shopping list
+const testshoplist = [
+  { checked: true, name: 'tomat', id: 1 },
+  { checked: false, name: 'apels', id: 2 },
+]
+
 export default function Home({ route, navigation }: any) {
   const { loading, error, data, refetch } = useQuery(USER_FAMILIES)
+
+  const [checkedList, setCheckedList] = React.useState([...testshoplist])
+  const [pressed, setPressed] = React.useState<{
+    id: number
+    checked: boolean
+  }>({ id: 0, checked: true })
 
   if (loading) return <Text>Loading...</Text>
   if (error) return <Text>{error.message}</Text>
@@ -30,19 +42,6 @@ export default function Home({ route, navigation }: any) {
 
   const currentList = route?.params?.listName ?? 'No selected list'
   // const query = useQuery(GET_SHOPLIST, { variables: { id: currentList } })
-
-  // TODO: get items from actual shopping list
-  const testshoplist = [
-    { checked: true, name: 'tomat', id: 1 },
-    { checked: false, name: 'apels', id: 2 },
-  ]
-
-  const [checkedList, setCheckedList] = React.useState([...testshoplist])
-
-  const [pressed, setPressed] = React.useState<{
-    id: number
-    checked: boolean
-  }>({ id: 0, checked: true })
 
   React.useEffect(() => {
     const found = checkedList.findIndex(it => it.id === pressed.id)

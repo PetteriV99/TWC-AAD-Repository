@@ -1,4 +1,5 @@
 import UserModel, { UserDocument } from '../models/UserModel';
+import bcrypt from 'bcrypt';
 
 export default class UsersDataSource {
   private model: typeof UserModel;
@@ -11,6 +12,11 @@ export default class UsersDataSource {
     return await this.model.find();
   }
 
+  async getUserById(id: string) {
+    const findUser = this.model.findById(id);
+    return findUser;
+  }
+
   async getUser({username, email}: Pick<UserDocument, 'username' | 'email'>) {
     const findUser = this.model.findOne({
       $or: [{email}, {username}]
@@ -19,8 +25,17 @@ export default class UsersDataSource {
   }
 
   async editUser(id: string, updateValues: Partial<UserDocument>) {
-    const editedUser = await this.model.findByIdAndUpdate(id, updateValues, { new: true });
-    console.log(editedUser)
+
+    let userValues;
+    if (updateValues.password) {
+      const hash = await bcrypt.hash(updateValues.password, 10);
+      userValues = {
+        ...updateValues,
+        password: hash
+      }
+    }
+
+    const editedUser = await this.model.findByIdAndUpdate(id, userValues, { new: true });
     return editedUser;
   }
 

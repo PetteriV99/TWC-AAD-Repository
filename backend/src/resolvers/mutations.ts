@@ -52,6 +52,7 @@ const mutations: MutationResolvers = {
         throw new Error("Error signing in")
       }
     },
+    
     updateUser: async (_, filters: Partial<UserDocument>, { dataSources, user }) => {
       if (!user) {
         throw new Error('You must be logged in')
