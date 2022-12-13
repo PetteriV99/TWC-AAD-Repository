@@ -35,6 +35,8 @@ type ShoppingItem {
 
 type Query {
   users: [User]
+
+  shoppingList(_id: ID!): ShoppingList
   
   families: [Family]
   family(_id: ID, name: String): Family

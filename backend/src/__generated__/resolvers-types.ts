@@ -164,6 +164,7 @@ export type Query = {
   families?: Maybe<Array<Maybe<Family>>>;
   family?: Maybe<Family>;
   familyLists?: Maybe<Array<Maybe<ShoppingList>>>;
+  shoppingList?: Maybe<ShoppingList>;
   userFamilies?: Maybe<Array<Maybe<Family>>>;
   userInvites?: Maybe<Array<Maybe<Family>>>;
   users?: Maybe<Array<Maybe<User>>>;
@@ -178,6 +179,11 @@ export type QueryFamilyArgs = {
 
 export type QueryFamilyListsArgs = {
   familyId: Scalars['ID'];
+};
+
+
+export type QueryShoppingListArgs = {
+  _id: Scalars['ID'];
 };
 
 
@@ -348,6 +354,7 @@ export type QueryResolvers<ContextType = ServerContext, ParentType extends Resol
   families?: Resolver<Maybe<Array<Maybe<ResolversTypes['Family']>>>, ParentType, ContextType>;
   family?: Resolver<Maybe<ResolversTypes['Family']>, ParentType, ContextType, Partial<QueryFamilyArgs>>;
   familyLists?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShoppingList']>>>, ParentType, ContextType, RequireFields<QueryFamilyListsArgs, 'familyId'>>;
+  shoppingList?: Resolver<Maybe<ResolversTypes['ShoppingList']>, ParentType, ContextType, RequireFields<QueryShoppingListArgs, '_id'>>;
   userFamilies?: Resolver<Maybe<Array<Maybe<ResolversTypes['Family']>>>, ParentType, ContextType, RequireFields<QueryUserFamiliesArgs, 'userId'>>;
   userInvites?: Resolver<Maybe<Array<Maybe<ResolversTypes['Family']>>>, ParentType, ContextType, RequireFields<QueryUserInvitesArgs, 'userId'>>;
   users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
