@@ -18,6 +18,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Appbar, Button, Divider, Menu } from 'react-native-paper'
 import { Platform } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import EditFamily from './screens/EditFamily'
+import InviteToFamily from './screens/Invites'
+import CreateInvite from './screens/CreateInvite'
+import CreateFamily from './screens/CreateFamily'
 
 function MainApp() {
   return (
@@ -112,7 +116,12 @@ const Router = () => {
       <Stack.Screen name='Register' component={Register} />
       <Stack.Screen name='MainApp' component={MainApp} />
       <Stack.Screen name='Profile' component={Profile} />
+
       <Stack.Screen name='EditProfile' component={EditProfile} />
+      <Stack.Screen name='EditFamily' component={EditFamily} />
+      <Stack.Screen name='Invites' component={InviteToFamily} />
+      <Stack.Screen name='CreateInvite' component={CreateInvite} />
+      <Stack.Screen name='CreateFamily' component={CreateFamily} />
     </Stack.Navigator>
   )
 }

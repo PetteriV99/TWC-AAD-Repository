@@ -42,9 +42,10 @@ type Query {
   families: [Family]
   family(_id: ID, name: String): Family
   familyLists(familyId: ID!): [ShoppingList]
+  currentUserFamilies: [Family]
 
   userFamilies(userId: ID!): [Family]
-  userInvites(userId: ID!): [Family]
+  userInvites: [Family]
 }
 
 type Mutation {

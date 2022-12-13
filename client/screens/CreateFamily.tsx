@@ -1,6 +1,7 @@
 import { ApolloQueryResult, gql, useMutation } from "@apollo/client"
 import React from "react"
-import { View, TextInput, Button, StyleSheet, Text } from "react-native"
+import { View, TextInput, StyleSheet, Text } from "react-native"
+import { Button } from "react-native-paper"
 import CustomModal from "../components/CustomModal"
 
 const CREATE_FAMILY = gql`
@@ -13,12 +14,11 @@ const CREATE_FAMILY = gql`
       lists
       invites
       description
-      avatar_url
     }
   }
 `
 
-export default function FamilyCreationModal({ refetch }: { refetch: () => Promise<ApolloQueryResult<any>> }) {
+export default function CreateFamily({ navigation: { navigate } }: { navigation: any }) {
   const [mutateFunction, { data, loading, error }] = useMutation(CREATE_FAMILY)
 
   const [name, setName] = React.useState("")
@@ -30,14 +30,13 @@ export default function FamilyCreationModal({ refetch }: { refetch: () => Promis
       variables: {
         name,
         ...description && { description },
-        ...avatarUrl && { avatarUrl },
       },
     })
   }
 
   React.useEffect(() => {
     if (data) {
-      refetch()
+      navigate('Family', { refetch: true })
     }
   }, [data])
 
@@ -45,40 +44,33 @@ export default function FamilyCreationModal({ refetch }: { refetch: () => Promis
   if (error) return <Text>{error.message}</Text>
 
   return (
-    <CustomModal buttonName="Create a new family">
-      <View style={styles.container}>
-        <Text style={styles.title}>Create a new family</Text>
-        <Text style={styles.subtitle}>Fill in the required details</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Family name *"
-          placeholderTextColor="#A9A9A9"
-          onChangeText={(text) => setName(text)}
-          value={name}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Family description"
-          placeholderTextColor="#A9A9A9"
-          onChangeText={(text) => setDescription(text)}
-          value={description}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Family avatar url"
-          placeholderTextColor="#A9A9A9"
-          onChangeText={(text) => setAvatarUrl(text)}
-          value={avatarUrl}
-        />
+    <View style={styles.container}>
+      <Text style={styles.title}>Create a new family</Text>
+      <Text style={styles.subtitle}>Fill in the required details</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Family name *"
+        placeholderTextColor="#A9A9A9"
+        onChangeText={(text) => setName(text)}
+        value={name}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Family description"
+        placeholderTextColor="#A9A9A9"
+        onChangeText={(text) => setDescription(text)}
+        value={description}
+      />
 
-        <View style={styles.buttonContainer}>
-          <Button
-            title="Create"
-            onPress={() => submit()}
-          />
-        </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          mode="contained"
+          onPress={() => submit()}
+        >
+          Create
+        </Button>
       </View>
-    </CustomModal>
+    </View>
   )
 }
 
@@ -107,7 +99,6 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   buttonContainer: {
-    width: 300,
-    marginTop: 10,
+    marginTop: 20,
   },
 })

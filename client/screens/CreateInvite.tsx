@@ -33,32 +33,34 @@ const SEND_INVITE = gql`
   }
 `
 
-export default function FamilyCreateInviteModal({ familyId }: { familyId: string }) {
+export default function CreateInvite({ route, navigation: { navigate } }: { route: any, navigation: any }) {
   const { data, loading, error, refetch} = useQuery(USERS)
   const [mutateFunction, mutateResult ] = useMutation(SEND_INVITE)
+  const familyId = route.params.familyId
 
   if (loading) return <Text>Loading...</Text>
   if (error) return <Text>{error.message}</Text>
 
   return (
-    <CustomModal buttonName="Invite">
-      <View style={styles.container}>
-        <Text style={styles.title}>Invite to family</Text>
-        <ScrollView style={styles.scrollView}>
-          {data.users.map((user: any) => (
-            <View key={user.id} style={styles.user}>
-              <Text style={styles.username}>{user.username}</Text>
-              <IconButton
-                icon="account-plus"
-                color="#000"
-                size={20}
-                onPress={() => mutateFunction({ variables: { familyId, userId: user.id } })}
-              />
-            </View>
-          ))}
-        </ScrollView>
-      </View>
-    </CustomModal>
+    <View style={styles.container}>
+      <Text style={styles.title}>Invite to family</Text>
+      <ScrollView style={styles.scrollView}>
+        {data.users.map((user: any) => (
+          <View key={user.id} style={styles.user}>
+            <Text style={styles.username}>{user.username}</Text>
+            <IconButton
+              icon="account-plus"
+              color="#000"
+              size={20}
+              onPress={() => {
+                mutateFunction({ variables: { familyId, userId: user.id } });
+                navigate('Family', { refetch: true });
+              }}
+            />
+          </View>
+        ))}
+      </ScrollView>
+    </View>
   )
 }
 

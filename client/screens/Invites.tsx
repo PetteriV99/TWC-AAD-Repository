@@ -6,7 +6,7 @@ import CustomModal from "../components/CustomModal"
 
 const FAMILY_INVITES = gql`
   query UserInvites {
-    userInvites(userId: "639059406a914ffbad0f2a49") {
+    userInvites {
       _id
       name
       creator
@@ -34,16 +34,19 @@ const ACCEPT_FAMILY_INVITE = gql`
   }
 `
 
-export default function FamilyInvitesModal({ refetchFamilies }: { refetchFamilies: () => Promise<ApolloQueryResult<any>> }) {
+export default function Invites({ navigation: { navigate } }: { navigation: any }) {
   const { data, loading, error, refetch} = useQuery(FAMILY_INVITES)
   const [mutateFunction, mutateResult ] = useMutation(ACCEPT_FAMILY_INVITE)
 
   const [invites, setInvites] = React.useState([])
 
   React.useEffect(() => {
+    refetch()
+  }, [])
+
+  React.useEffect(() => {
     if (mutateResult.data) {
-      refetchFamilies()
-      refetch()
+      navigate('Family', { refetch: true })
     }
   }, [mutateResult.data])
 
@@ -51,31 +54,33 @@ export default function FamilyInvitesModal({ refetchFamilies }: { refetchFamilie
   if (error) return <Text>{error.message}</Text>
 
   if (data) {
-    if (data.userInvites.length === 0) return null
+    if (data.userInvites.length === 0) return (
+      <View style={styles.container}>
+        <Text style={styles.title}>No invites found.</Text>
+      </View>
+    )
   }
 
   return (
-    <CustomModal buttonName="Available invites !">
-      <View style={styles.container}>
-        <Text style={styles.title}>Available invites</Text>
-        <Text style={styles.subtitle}>Click on an invite to join</Text>
-        <ScrollView>
-          {data.userInvites.map((invite: any) => (
-            <View style={styles.pressableRow } key={invite._id}>
-              <Text style={styles.listItem}>{invite.name}</Text>
-              <IconButton style={styles.acceptButton} icon="account-plus" onPress={() => {
-                mutateFunction({
-                  variables: {
-                    familyId: invite._id,
-                    accept: true,
-                  },
-                })
-              }} />
-            </View>
-          ))}
-        </ScrollView>
-      </View>
-    </CustomModal>
+    <View style={styles.container}>
+      <Text style={styles.title}>Available invites</Text>
+      <Text style={styles.subtitle}>Click on an invite to join</Text>
+      <ScrollView>
+        {data.userInvites.map((invite: any) => (
+          <View style={styles.pressableRow } key={invite._id}>
+            <Text style={styles.listItem}>{invite.name}</Text>
+            <IconButton style={styles.acceptButton} icon="account-plus" onPress={() => {
+              mutateFunction({
+                variables: {
+                  familyId: invite._id,
+                  accept: true,
+                },
+              })
+            }} />
+          </View>
+        ))}
+      </ScrollView>
+    </View>
   )
 }
 

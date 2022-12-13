@@ -5,8 +5,8 @@ import { StyleSheet, Text, ScrollView } from 'react-native'
 import { Button } from 'react-native-paper'
 import CustomModal from '../components/CustomModal'
 import List from '../components/List'
-import FamilyCreationModal from './FamilyCreationModal'
-import FamilyInvitesModal from './FamilyInvitesModal'
+import FamilyCreationModal from './CreateFamily'
+import FamilyInvitesModal from './Invites'
 
 const USER_FAMILIES = gql`
   query UserFamilies {
@@ -23,13 +23,26 @@ const USER_FAMILIES = gql`
   }
 `
 
-export default function Family() {
+export default function Family({ route, navigation }: { route: any, navigation: any }) {
   const { loading, error, data, refetch } = useQuery(USER_FAMILIES)
+
+  const [families, setFamilies] = React.useState([])
+
+  React.useEffect(() => {
+    if (route.params?.refetch) {
+      refetch()
+      route.params.refetch = false
+    }
+  }, [route.params?.refetch])
+
+  React.useEffect(() => {
+    if (data) {
+      setFamilies(data.userFamilies)
+    }
+  }, [data])
 
   if (loading) return <Text>Loading...</Text>
   if (error) return <Text>{error.message}</Text>
-
-  const families = data.userFamilies
 
   return (
     <ScrollView style={styles.container}>
@@ -42,6 +55,7 @@ export default function Family() {
         Refresh
       </Button>
       <List
+        navigation={navigation}
         title='My families'
         headers={[{ id: 1, title: 'Name' }]}
         items={families.map((family: any) => ({
@@ -51,8 +65,8 @@ export default function Family() {
         listType={'family'}
       />
 
-      <FamilyInvitesModal refetchFamilies={refetch} />
-      <FamilyCreationModal refetch={refetch} />
+      <Button style={styles.button } mode='contained' onPress={() => navigation.navigate('Invites')}> Invites </Button>
+      <Button style={styles.button } mode='contained' onPress={() => navigation.navigate('CreateFamily')}> Create family </Button>
     </ScrollView>
   )
 }
@@ -60,6 +74,9 @@ export default function Family() {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
+    margin: 10,
+  },
+  button: {
     margin: 10,
   },
 })

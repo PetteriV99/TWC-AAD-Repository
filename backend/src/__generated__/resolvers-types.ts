@@ -161,6 +161,7 @@ export type MutationUpdateUserArgs = {
 export type Query = {
   __typename?: 'Query';
   currentUser?: Maybe<User>;
+  currentUserFamilies?: Maybe<Array<Maybe<Family>>>;
   families?: Maybe<Array<Maybe<Family>>>;
   family?: Maybe<Family>;
   familyLists?: Maybe<Array<Maybe<ShoppingList>>>;
@@ -188,11 +189,6 @@ export type QueryShoppingListArgs = {
 
 
 export type QueryUserFamiliesArgs = {
-  userId: Scalars['ID'];
-};
-
-
-export type QueryUserInvitesArgs = {
   userId: Scalars['ID'];
 };
 
@@ -352,12 +348,13 @@ export type MutationResolvers<ContextType = ServerContext, ParentType extends Re
 
 export type QueryResolvers<ContextType = ServerContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   currentUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  currentUserFamilies?: Resolver<Maybe<Array<Maybe<ResolversTypes['Family']>>>, ParentType, ContextType>;
   families?: Resolver<Maybe<Array<Maybe<ResolversTypes['Family']>>>, ParentType, ContextType>;
   family?: Resolver<Maybe<ResolversTypes['Family']>, ParentType, ContextType, Partial<QueryFamilyArgs>>;
   familyLists?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShoppingList']>>>, ParentType, ContextType, RequireFields<QueryFamilyListsArgs, 'familyId'>>;
   shoppingList?: Resolver<Maybe<ResolversTypes['ShoppingList']>, ParentType, ContextType, RequireFields<QueryShoppingListArgs, '_id'>>;
   userFamilies?: Resolver<Maybe<Array<Maybe<ResolversTypes['Family']>>>, ParentType, ContextType, RequireFields<QueryUserFamiliesArgs, 'userId'>>;
-  userInvites?: Resolver<Maybe<Array<Maybe<ResolversTypes['Family']>>>, ParentType, ContextType, RequireFields<QueryUserInvitesArgs, 'userId'>>;
+  userInvites?: Resolver<Maybe<Array<Maybe<ResolversTypes['Family']>>>, ParentType, ContextType>;
   users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
 }>;
 
