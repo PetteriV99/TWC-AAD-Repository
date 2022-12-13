@@ -9,7 +9,8 @@ import {
   EditProfile,
   Register,
   More,
-  AuthLoading
+  AuthLoading,
+  Settings
 } from './screens'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 const Stack = createNativeStackNavigator()
@@ -116,6 +117,7 @@ const Router = () => {
       <Stack.Screen name='Register' component={Register} />
       <Stack.Screen name='MainApp' component={MainApp} />
       <Stack.Screen name='Profile' component={Profile} />
+      <Stack.Screen name='Settings' component={Settings} />
 
       <Stack.Screen name='EditProfile' component={EditProfile} />
       <Stack.Screen name='EditFamily' component={EditFamily} />
