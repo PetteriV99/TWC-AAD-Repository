@@ -1,9 +1,9 @@
 import { StyleSheet, View } from 'react-native'
 import { Button, Checkbox, DataTable, Text } from 'react-native-paper'
 import * as React from 'react'
-import FamilyEditModal from '../screens/FamilyEditModal'
+import FamilyEditModal from '../screens/EditFamily'
 import { ApolloQueryResult } from '@apollo/client'
-import FamilyCreateInviteModal from '../screens/FamilyCreateInviteModal'
+import FamilyCreateInviteModal from '../screens/CreateInvite'
 import EditShoppingList from '../screens/ShoppingList/EditShoppingList'
 import DeleteShoppingList from '../screens/ShoppingList/DeleteShoppingList'
 import AddShoppingListItem from '../screens/ShoppingList/AddShoppingListItem'
@@ -57,8 +57,8 @@ export default function List({
             {listType === 'family' && (
               <>
                 <DataTable.Cell>
-                  <FamilyEditModal familyId={String(i.id)} />
-                  <FamilyCreateInviteModal familyId={String(i.id)} />
+                  <Button onPress={() => navigation.navigate('EditFamily', { familyId: i.id })}>Edit</Button>
+                  <Button onPress={() => navigation.navigate('CreateInvite', { familyId: i.id })}>Invite</Button>
                 </DataTable.Cell>
               </>
             )}

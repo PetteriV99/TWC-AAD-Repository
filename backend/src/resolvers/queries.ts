@@ -49,6 +49,15 @@ const queries: QueryResolvers = {
       return family;
     },
 
+    currentUserFamilies: async (_, __, { dataSources, user }) => {
+      if (!user) {
+        throw new Error('You must be logged in');
+      }
+      
+      const data = await dataSources.families.getUserFamilies(user.id);
+      return data;
+    },
+
     familyLists: async (_, { familyId }, { dataSources, user }) => {
       if (!user) {
         throw new Error('You must be logged in');
