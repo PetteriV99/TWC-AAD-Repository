@@ -5,34 +5,12 @@ import { Button, IconButton, TextInput } from 'react-native-paper'
 import CustomModal from '../../components/CustomModal'
 
 const UPDATE_SHOPLIST = gql`
-  mutation UpdateShoplist(
-    $shoplistId: ID!
-    $name: String
-    $description: String
-    $avatarUrl: String
-  ) {
-    updateShoplist(
-      shoplistId: $shoplistId
-      name: $name
-      description: $description
-      avatar_url: $avatarUrl
-    ) {
-      name
-    }
-  }
-`
-
-const DELETE_SHOPLIST = gql`
-  mutation DeleteShoplist($shoplistId: ID!) {
-    deleteShoplist(shoplistId: $shoplistId) {
+  mutation UpdateShoppingList($listId: ID!, $name: String, $description: String) {
+    updateShoppingList(listId: $listId, name: $name, description: $description) {
       _id
+      familyId
       name
-      creator
-      members
-      lists
-      invites
       description
-      avatar_url
     }
   }
 `
@@ -52,24 +30,26 @@ export default function ShoplistEditModal({
 }: {
   route: any, navigation: any
 }) {
-  const [updateShoplistMutation] = useMutation(UPDATE_SHOPLIST)
-  const [deleteShoplistMutation] = useMutation(DELETE_SHOPLIST)
-  const shoplistId = route.params.shoplistId
-  console.log(shoplistId)
-  const query = useQuery(GET_SHOPLIST, { variables: { id: shoplistId } })
+  const listId = route.params.shoplistId
+  const query = useQuery(GET_SHOPLIST, { variables: { id: listId } })
 
-  const { shoplist } = query.data || {}
+  const [updateShoplistMutation, updateShopListData] = useMutation(UPDATE_SHOPLIST)
+
+  const { shoppingList } = query.data || {}
 
   const [name, setName] = React.useState('')
   const [description, setDescription] = React.useState('')
-  const [avatarUrl, setAvatarUrl] = React.useState('')
 
   React.useEffect(() => {
-    if (shoplist) {
-      setName(shoplist.name)
-      setDescription(shoplist.description)
+    query.refetch()
+  }, [])
+
+  React.useEffect(() => {
+    if (shoppingList) {
+      setName(shoppingList.name)
+      setDescription(shoppingList.description)
     }
-  }, [shoplist])
+  }, [query.data])
 
   if (query.loading) return <Text>Loading...</Text>
   if (query.error) return <Text>{query.error.message}</Text>
@@ -99,30 +79,17 @@ export default function ShoplistEditModal({
       <Button
         mode='contained'
         onPress={async () => {
-          updateShoplistMutation({
+          await updateShoplistMutation({
             variables: {
-              shoplistId,
-              ...(name && { name }),
-              ...(description && { description }),
-              ...(avatarUrl && { avatarUrl }),
+              listId,
+              ...name && { name },
+              ...description && { description },
             },
           })
+          await navigate('Shopping Lists', { refetch: true })
         }}
       >
         Update
-      </Button>
-
-      <Button
-        mode='contained'
-        onPress={async () => {
-          deleteShoplistMutation({
-            variables: {
-              shoplistId,
-            },
-          })
-        }}
-      >
-        Delete
       </Button>
     </View>
   )

@@ -14,8 +14,9 @@ const LOGIN = gql`
 export default function Login({ navigation }: any) {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
-  const [login, { data, loading, error }] = useMutation(LOGIN, {
+  const [login, { data, loading, error, client }] = useMutation(LOGIN, {
     onCompleted: data => {
+      client.resetStore()
       storeToken(data.logIn)
     },
     onError: err => {
@@ -30,9 +31,10 @@ export default function Login({ navigation }: any) {
   const storeToken = async (value: any) => {
     try {
       const jsonValue = JSON.stringify(value)
-      await AsyncStorage.setItem('AUTH_KEY', jsonValue).then(
+      await AsyncStorage.setItem('AUTH_KEY', jsonValue).then(() => {
+        navigation.popToTop()
         navigation.navigate('MainApp')
-      )
+      })
     } catch (e) {
       // saving error
     }

@@ -7,16 +7,17 @@ import EditShoppingList from './ShoppingList/EditShoppingList'
 import ShopListCreationModal from './ShoppingList/CreateShopList'
 
 const FAMILY_SHOPPING_LISTS = gql`
-  query UserFamilies {
-    userFamilies(userId: "639059406a914ffbad0f2a49") {
+  query UserFamilyLists {
+    userFamilyLists {
       _id
+      familyId
       name
-      creator
-      members
-      lists
-      invites
       description
-      avatar_url
+      items {
+        name
+        quantity
+        checked
+      }
     }
   }
 `
@@ -24,21 +25,23 @@ const FAMILY_SHOPPING_LISTS = gql`
 export default function ShoppingList({ route, navigation }: { route: any; navigation: any }) {
   const { loading, error, data, refetch } = useQuery(FAMILY_SHOPPING_LISTS)
 
+  const [shoppingLists, setShoppingLists] = React.useState([])
+
+  React.useEffect(() => {
+    if (!route.params || route.params.refetch) {
+      refetch()
+      if (route.params) route.params.refetch = false
+    }
+  }, [route.params])
+
+  React.useEffect(() => {
+    if (data) {
+      setShoppingLists(data.userFamilyLists)
+    }
+  }, [data])
+
   if (loading) return <Text>Loading...</Text>
   if (error) return <Text>{error.message}</Text>
-
-  const families = data.userFamilies
-
-  const allShoppingLists = families
-    .map((f: any) =>
-      f.lists.map((l: any, i: number) => ({
-        
-        key: f._id + i,
-        familyId: f._id,
-        name: l,
-      }))
-    )
-    .flat()
 
   return (
     <ScrollView style={styles.container}>
@@ -54,10 +57,10 @@ export default function ShoppingList({ route, navigation }: { route: any; naviga
         navigation={navigation}
         title='My family shopping lists'
         headers={[{ id: 1, title: 'Name' }]}
-        items={allShoppingLists.map((l: any) => ({
-          id: l.key,
-          familyId: l.familyId,
-          name: l.name,
+        items={shoppingLists.map((list: any) => ({
+          id: list._id,
+          familyId: list.familyId,
+          name: list.name,
         }))}
         listType={'lists'}
       />

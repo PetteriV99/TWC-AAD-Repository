@@ -5,62 +5,36 @@ import { Button } from 'react-native-paper'
 import CustomModal from '../../components/CustomModal'
 import DropDownInput from '../../components/DropDownInput'
 
-const CREATE_SHOPLIST = gql`
-  mutation CreateShoppingList(
-    $createShoppingListFamilyId2: ID!
-    $name: String!
-    $description: String
-  ) {
-    createShoppingList(
-      familyId: $createShoppingListFamilyId2
-      name: $name
-      description: $description
-    ) {
+const CREATE_SHOP_ITEM = gql`
+  mutation CheckItemInShoppingList($listId: ID!, $name: String!, $quantity: Int!, $checked: Boolean!) {
+    addItemToShoppingList(listId: $listId, name: $name, quantity: $quantity, checked: $checked) {
       _id
-      description
-      familyId
-      name
     }
   }
 `
 
-const USER_FAMILIES = gql`
-  query UserFamilies {
-    userFamilies(userId: "639059406a914ffbad0f2a49") {
-      _id
-      name
-    }
-  }
-`
-
-export default function CreateShopList({
-  navigation: { navigate },
+export default function CreateNewItem({
+  route, navigation: { navigate },
 }: {
-  navigation: any
+  route: any, navigation: any
 }) {
-  const [mutateFunction, { data, loading, error }] =
-    useMutation(CREATE_SHOPLIST)
-
-  const { data: familyData } = useQuery(USER_FAMILIES)
+  const [mutateFunction, { data, loading, error }] = useMutation(CREATE_SHOP_ITEM)
+  const { listId } = route.params
 
   const [name, setName] = React.useState('')
-  const [description, setDescription] = React.useState('')
+  const [quantity, setQuantity] = React.useState(0)
   const [family, setFamily] = React.useState({ name: 'None', id: '' })
-
-  const families = familyData.userFamilies.map((uf: any) => ({
-    name: uf.name,
-    id: uf._id,
-  }))
 
   const submit = async () => {
     await mutateFunction({
       variables: {
+        listId,
         name,
-        createShoppingListFamilyId2: family.id,
-        ...(description && { description }),
+        quantity,
+        checked: false,
       },
     })
-    await navigate('Shopping Lists', { refetch: true })
+    await navigate('Home', { listId, refetch: true })
   }
 
   if (loading) return <Text>Loading...</Text>
@@ -68,29 +42,22 @@ export default function CreateShopList({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Add new shopping list</Text>
-      <Text style={styles.subtitle}>Fill in the required details</Text>
-      <Text>Selected family: {family.name}</Text>
-      <DropDownInput
-        style={styles.dropdown}
-        title='Select family'
-        items={families}
-        setFunc={setFamily}
-      />
+      <Text style={styles.title}>Add new shopping item to the list</Text>
 
       <TextInput
         style={styles.input}
-        placeholder='Shopping list name *'
+        placeholder='Shopping list item name *'
         placeholderTextColor='#A9A9A9'
         onChangeText={text => setName(text)}
         value={name}
       />
       <TextInput
         style={styles.input}
-        placeholder='Shopping list description'
+        placeholder='Shopping list item quantity *'
         placeholderTextColor='#A9A9A9'
-        onChangeText={text => setDescription(text)}
-        value={description}
+        keyboardType='numeric'
+        onChangeText={text => setQuantity(Number(text))}
+        value={String(quantity)}
       />
 
       <View style={styles.buttonContainer}>

@@ -38,23 +38,7 @@ export default function DeleteShopList({
     variables: { familyId: route.params.familyId },
   })
 
-  const listName = route.params.listName
-
-  const { familyLists } = query.data || {}
-  console.log('yoo', listName)
-
-  const [listId, setListId] = React.useState('')
-
-  React.useEffect(() => {
-    if (familyLists) {
-      const currentList = familyLists.find(
-        (list: any) => list.name === listName
-      )
-      if (!currentList) return
-      setListId(currentList._id)
-      console.log('yoo', listId)
-    }
-  }, [familyLists])
+  const listId = route.params.shoplistId
 
   if (query.loading) return <Text>Loading...</Text>
   if (query.error) return <Text>{query.error.message}</Text>
@@ -88,11 +72,12 @@ export default function DeleteShopList({
           }}
           mode='contained'
           onPress={async () => {
-            deleteList({
+            await deleteList({
               variables: {
-                listId: listName,
+                listId,
               },
             })
+            await navigate('Shopping Lists', { refetch: true })
           }}
         >
           Yes

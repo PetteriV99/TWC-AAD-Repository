@@ -7,7 +7,6 @@ export default function More({ navigation }: any) {
     const signOut = () => {
         AsyncStorage.removeItem('AUTH_KEY').then(
             navigation.navigate('Login')
-            // Add reseting Apollo Client Store
         );
     };
 
