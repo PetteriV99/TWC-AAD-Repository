@@ -1,4 +1,4 @@
-import { StyleSheet, ScrollView } from 'react-native'
+import { StyleSheet, ScrollView, ImageBackground } from 'react-native'
 import { Button, Divider, Text, TextInput } from 'react-native-paper'
 import * as React from 'react'
 import { gql } from '@apollo/client/core'
@@ -56,6 +56,7 @@ export default function Login({ navigation }: any) {
         label='Password'
         value={password}
         onChangeText={text => setPassword(text)}
+        secureTextEntry
       />
       <Divider style={{ marginVertical: 20 }} />
       <Button mode='contained' onPress={handleSubmit}>
@@ -70,7 +71,9 @@ export default function Login({ navigation }: any) {
         {loading
           ? 'Loading...'
           : error
-          ? error.graphQLErrors.map(({ message }, i) => {return(<Text key={i}>{message}</Text>)})
+          ? error.graphQLErrors.map(({ message }, i) => {
+              return <Text key={i}>{message}</Text>
+            })
           : data && data.logIn}
       </Text>
     </ScrollView>

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { StyleSheet, Text, ScrollView } from 'react-native'
+import { StyleSheet, Text, ScrollView, ImageBackground } from 'react-native'
 import { Button, Checkbox } from 'react-native-paper'
 import List from '../components/List'
 import { gql, useQuery } from '@apollo/client'
@@ -22,7 +22,13 @@ const FAMILY_SHOPPING_LISTS = gql`
   }
 `
 
-export default function ShoppingList({ route, navigation }: { route: any; navigation: any }) {
+export default function ShoppingList({
+  route,
+  navigation,
+}: {
+  route: any
+  navigation: any
+}) {
   const { loading, error, data, refetch } = useQuery(FAMILY_SHOPPING_LISTS)
 
   const [shoppingLists, setShoppingLists] = React.useState([])
@@ -44,31 +50,40 @@ export default function ShoppingList({ route, navigation }: { route: any; naviga
   if (error) return <Text>{error.message}</Text>
 
   return (
-    <ScrollView style={styles.container}>
-      <Button
-        mode='contained'
-        onPress={async () => {
-          refetch()
-        }}
-      >
-        Refresh
-      </Button>
-      <List
-        navigation={navigation}
-        title='My family shopping lists'
-        headers={[{ id: 1, title: 'Name' }]}
-        items={shoppingLists.map((list: any) => ({
-          id: list._id,
-          familyId: list.familyId,
-          name: list.name,
-        }))}
-        listType={'lists'}
-      />
+    <ImageBackground
+      source={require('../assets/shoppinglist_back.jpg')}
+      style={{ width: '100%', height: '100%' }}
+    >
+      <ScrollView style={styles.container}>
+        <Button
+          mode='contained'
+          onPress={async () => {
+            refetch()
+          }}
+        >
+          Refresh
+        </Button>
+        <List
+          navigation={navigation}
+          title='My family shopping lists'
+          headers={[{ id: 1, title: 'Name' }]}
+          items={shoppingLists.map((list: any) => ({
+            id: list._id,
+            familyId: list.familyId,
+            name: list.name,
+          }))}
+          listType={'lists'}
+        />
 
-      <Button style={styles.button} mode='contained' onPress={() => navigation.navigate('CreateShopList')}>
-        Create new shopping list
-      </Button>
-    </ScrollView>
+        <Button
+          style={styles.button}
+          mode='contained'
+          onPress={() => navigation.navigate('CreateShopList')}
+        >
+          Create new shopping list
+        </Button>
+      </ScrollView>
+    </ImageBackground>
   )
 }
 
