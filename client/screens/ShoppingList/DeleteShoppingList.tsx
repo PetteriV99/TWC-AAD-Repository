@@ -4,15 +4,10 @@ import * as React from 'react'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import CustomModal from '../../components/CustomModal'
 
-const UPDATE_SHOPPING_LIST = gql`
-  mutation Mutation($listId: ID!, $name: String, $description: String) {
-    updateShoppingList(
-      listId: $listId
-      name: $name
-      description: $description
-    ) {
-      description
-      name
+const DELETE_SHOPPING_LIST = gql`
+  mutation Mutation($listId: ID!) {
+    deleteShoppingList(listId: $listId) {
+      _id
     }
   }
 `
@@ -40,16 +35,15 @@ export default function EditShoppingList({
   familyId: string
   listName: string
 }) {
-  const [update] = useMutation(UPDATE_SHOPPING_LIST)
+  const [deleteList] = useMutation(DELETE_SHOPPING_LIST)
   const query = useQuery(GET_SHOPPING_LISTS, {
     variables: { familyId: familyId },
   })
 
   const { familyLists } = query.data || {}
+  console.log('yoo', listName)
 
   const [listId, setListId] = React.useState('')
-  const [name, setName] = React.useState('')
-  const [description, setDescription] = React.useState('')
 
   React.useEffect(() => {
     if (familyLists) {
@@ -58,8 +52,7 @@ export default function EditShoppingList({
       )
       if (!currentList) return
       setListId(currentList._id)
-      setName(currentList.name)
-      setDescription(currentList.description)
+      console.log('yoo', listId)
     }
   }, [familyLists])
 
@@ -96,11 +89,9 @@ export default function EditShoppingList({
             }}
             mode='contained'
             onPress={async () => {
-              update({
+              deleteList({
                 variables: {
-                  listId,
-                  ...(name && { name }),
-                  ...(description && { description }),
+                  listId: listName,
                 },
               })
             }}

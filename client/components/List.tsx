@@ -1,11 +1,12 @@
 import { StyleSheet, View } from 'react-native'
-import { Button, DataTable, Text } from 'react-native-paper'
+import { Button, Checkbox, DataTable, Text } from 'react-native-paper'
 import * as React from 'react'
 import FamilyEditModal from '../screens/FamilyEditModal'
 import { ApolloQueryResult } from '@apollo/client'
 import FamilyCreateInviteModal from '../screens/FamilyCreateInviteModal'
 import EditShoppingList from '../screens/ShoppingList/EditShoppingList'
 import DeleteShoppingList from '../screens/ShoppingList/DeleteShoppingList'
+import AddShoppingListItem from '../screens/ShoppingList/AddShoppingListItem'
 
 export default function List({
   navigation,
@@ -19,6 +20,7 @@ export default function List({
   headers: { id: number; title: string }[]
   items: {
     id: number | string
+    familyId?: number
     name: string
     quantity?: number
     collected?: number
@@ -59,8 +61,7 @@ export default function List({
             {listType === 'shopping' && (
               <>
                 <DataTable.Cell>
-                  {/* <Checkbox status={i.collected ? 'checked' : 'unchecked'} /> */}
-                  {i.collected} / {i.quantity}
+                  <Checkbox status={i.collected ? 'checked' : 'unchecked'} />
                 </DataTable.Cell>
               </>
             )}
@@ -68,11 +69,11 @@ export default function List({
               <>
                 <DataTable.Cell>
                   <EditShoppingList
-                    familyId={String(i.id)}
+                    familyId={String(i.familyId)}
                     listName={String(i.name)}
                   />
                   <DeleteShoppingList
-                    familyId={String(i.id)}
+                    familyId={String(i.familyId)}
                     listName={String(i.name)}
                   />
                 </DataTable.Cell>

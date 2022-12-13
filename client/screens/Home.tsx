@@ -19,6 +19,17 @@ const USER_FAMILIES = gql`
     }
   }
 `
+
+// const GET_SHOPLIST = gql`
+//   query GetShoplist($id: ID!) {
+//     shoplist(_id: $id) {
+//       name
+//       description
+//       avatar_url
+//     }
+//   }
+// `
+
 export default function Home({ route, navigation }: any) {
   const { loading, error, data, refetch } = useQuery(USER_FAMILIES)
 
@@ -28,7 +39,9 @@ export default function Home({ route, navigation }: any) {
   const families = route?.params?.listName ? data.userFamilies : []
 
   const currentList = route?.params?.listName ?? 'No selected list'
+  // const query = useQuery(GET_SHOPLIST, { variables: { id: currentList } })
 
+  // console.log('yetgfd', query)
   return (
     <ScrollView style={styles.container}>
       <List
@@ -47,14 +60,6 @@ export default function Home({ route, navigation }: any) {
       {route?.params?.listName === undefined && (
         <Text style={styles.center}>Please select a list</Text>
       )}
-      {/* x määrä tavaraa kärryssä ? */}
-      {/* shopping listan pitää päivittyä kun shoppailee  */}
-      {/* - a user can update the shopping list when shopping after the shopping list is opened in the app (1 point), or app queries the list in short time intervals (2 point), or the backend can push the
-
-changed data into the shopping list in real-time when the user is shopping and the shopping list is open (4 points) */}
-      {/* the app has a personal look and feel (2 points)
-
-- the usability of the app is good (2 points) */}
     </ScrollView>
   )
 }

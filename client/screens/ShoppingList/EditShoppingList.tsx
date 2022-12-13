@@ -3,6 +3,7 @@ import { Button, Text, TextInput } from 'react-native-paper'
 import * as React from 'react'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import CustomModal from '../../components/CustomModal'
+import AddShoppingListItem from './AddShoppingListItem'
 
 const UPDATE_SHOPPING_LIST = gql`
   mutation Mutation($listId: ID!, $name: String, $description: String) {
@@ -106,6 +107,7 @@ export default function EditShoppingList({
         >
           Update
         </Button>
+        <AddShoppingListItem shoplistId={listId} />
       </View>
     </CustomModal>
   )

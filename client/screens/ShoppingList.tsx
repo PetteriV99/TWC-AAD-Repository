@@ -20,6 +20,7 @@ const FAMILY_SHOPPING_LISTS = gql`
     }
   }
 `
+
 export default function Shopping({ navigation }: any) {
   const { loading, error, data, refetch } = useQuery(FAMILY_SHOPPING_LISTS)
 
@@ -28,7 +29,7 @@ export default function Shopping({ navigation }: any) {
 
   const families = data.userFamilies
 
-  let allShoppingLists = families
+  const allShoppingLists = families
     .map((f: any) =>
       f.lists.map((l: any, i: number) => ({
         key: f._id + i,
@@ -37,17 +38,24 @@ export default function Shopping({ navigation }: any) {
       }))
     )
     .flat()
-  console.log(families)
 
   return (
     <ScrollView style={styles.container}>
+      <Button
+        mode='contained'
+        onPress={async () => {
+          refetch()
+        }}
+      >
+        Refresh
+      </Button>
       <List
         navigation={navigation}
         title='My family shopping lists'
         headers={[{ id: 1, title: 'Name' }]}
-        // FIXME: TESTING VARIABLE
         items={allShoppingLists.map((l: any) => ({
           id: l.key,
+          familyId: l.familyId,
           name: l.name,
         }))}
         listType={'lists'}
