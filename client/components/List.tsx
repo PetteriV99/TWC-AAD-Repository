@@ -5,7 +5,7 @@ import FamilyEditModal from '../screens/EditFamily'
 import { ApolloQueryResult } from '@apollo/client'
 import FamilyCreateInviteModal from '../screens/CreateInvite'
 import EditShoppingList from '../screens/ShoppingList/EditShoppingList'
-import DeleteShoppingList from '../screens/ShoppingList/DeleteShoppingList'
+import DeleteShoppingList from '../screens/ShoppingList/DeleteShopList'
 import AddShoppingListItem from '../screens/ShoppingList/AddShoppingListItem'
 
 export default function List({
@@ -45,15 +45,15 @@ export default function List({
 
         {items.map(i => (
           <DataTable.Row
-            key={i.id}
+            key={i.name}
             onPress={() => {
               listType === 'lists' &&
-                navigation.navigate('Home', { listName: i.name })
+                navigation.navigate('Home', { refetch: true, listId: i.id })
 
               listType === 'shopping' && setFunc !== undefined && setFunc(i)
             }}
           >
-            <DataTable.Cell>{i.name}</DataTable.Cell>
+            <DataTable.Cell>{`${i.quantity ? `${i.quantity}x ` : ''}${i.name}`}</DataTable.Cell>
             {listType === 'family' && (
               <>
                 <DataTable.Cell>
@@ -72,14 +72,12 @@ export default function List({
             {listType === 'lists' && (
               <>
                 <DataTable.Cell>
-                  <EditShoppingList
-                    familyId={String(i.familyId)}
-                    listName={String(i.name)}
-                  />
-                  <DeleteShoppingList
-                    familyId={String(i.familyId)}
-                    listName={String(i.name)}
-                  />
+                  <Button onPress={() => navigation.navigate('EditShopListDetails', { shoplistId: i.id })}>
+                    Edit
+                  </Button>
+                  <Button onPress={() => navigation.navigate('DeleteShopList', { familyId: i.familyId, shoplistId: i.id })}>
+                    Delete
+                  </Button>
                 </DataTable.Cell>
               </>
             )}

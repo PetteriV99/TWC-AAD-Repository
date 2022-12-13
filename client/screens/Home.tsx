@@ -1,81 +1,120 @@
 import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, ScrollView } from 'react-native'
-import { Divider, Text } from 'react-native-paper'
+import { StyleSheet, ScrollView, View } from 'react-native'
+import { Button, Divider, Text } from 'react-native-paper'
 import * as React from 'react'
 import List from '../components/List'
-import { gql, useQuery } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 
-const USER_FAMILIES = gql`
-  query UserFamilies {
-    userFamilies(userId: "639059406a914ffbad0f2a49") {
-      _id
+const SHOPPING_LIST = gql`
+  query ShoppingList($id: ID) {
+    shoppingList(_id: $id) {
+      items {
+        name
+        quantity
+        checked
+      }
       name
-      creator
-      members
-      lists
-      invites
-      description
-      avatar_url
     }
   }
 `
 
-// TODO: get items from actual shopping list
-const testshoplist = [
-  { checked: true, name: 'tomat', id: 1 },
-  { checked: false, name: 'apels', id: 2 },
-]
+const CHECK_ITEM = gql`
+  mutation CheckItemInShoppingList($listId: ID!, $name: String!, $checked: Boolean!) {
+    checkItemInShoppingList(listId: $listId, name: $name, checked: $checked) {
+      _id
+    }
+  }
+`
 
 export default function Home({ route, navigation }: any) {
-  const { loading, error, data, refetch } = useQuery(USER_FAMILIES)
+  const { loading, error, data, refetch } = useQuery(SHOPPING_LIST, { variables: { id: route.params?.listId } })
+  const [mutateFunction] = useMutation(CHECK_ITEM)
 
-  const [checkedList, setCheckedList] = React.useState([...testshoplist])
   const [pressed, setPressed] = React.useState<{
-    id: number
+    name: string
     checked: boolean
-  }>({ id: 0, checked: true })
+  }>({ name: '', checked: true })
 
-  const families = route?.params?.listName ? data.userFamilies : []
-
-  const currentList = route?.params?.listName ?? 'No selected list'
-  // const query = useQuery(GET_SHOPLIST, { variables: { id: currentList } })
+  const [selectedListName, setSelectedListName] = React.useState(error && 'Please select a list' || 'Loading...')
+  const [selectedListItems, setSelectedListItems] = React.useState<any[]>([])
 
   React.useEffect(() => {
-    const found = checkedList.findIndex(it => it.id === pressed.id)
-
-    if (found !== -1) {
-      const newlist = [...checkedList]
-
-      newlist[found] = { ...newlist[found], checked: !newlist[found].checked }
-
-      setCheckedList(newlist)
-    }
+    setSelectedListItems(
+      selectedListItems.map(it => {
+        if (it.name === pressed.name) {
+          mutateFunction({
+            variables: {
+              listId: route.params?.listId,
+              name: it.name,
+              checked: !it.collected,
+            },
+          })
+          return {
+            ...it,
+            collected: !it.collected,
+          }
+        }
+        return it
+      })
+    )
   }, [pressed])
 
+  React.useEffect(() => {
+    if (!route.params || route.params.refetch) {
+      refetch()
+      if (route.params) route.params.refetch = false
+    }
+  }, [route.params])
+
+  React.useEffect(() => {
+    if (data && route.params?.listId) {
+      setSelectedListName(data.shoppingList.name)
+      setSelectedListItems(data.shoppingList.items.map((item: any) => ({
+        collected: item.checked,
+        ...item,
+      })))
+    } else {
+      setSelectedListName('Please select a list')
+    }
+  }, [data])
+
   if (loading) return <Text>Loading...</Text>
-  if (error) return <Text>{error.message}</Text>
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
+      <Button
+        mode='contained'
+        onPress={async () => {
+          refetch()
+        }}
+      >
+        Refresh
+      </Button>
+      <ScrollView>
       <List
-        title={currentList}
+        title={selectedListName}
         headers={[
           { id: 1, title: 'Name' },
           { id: 2, title: 'Collected' },
         ]}
-        items={checkedList.map((item: any) => ({
-          id: item.id,
-          name: item.name,
+        items={selectedListItems.map((item: any) => ({
+          key: item.name,
           collected: item.checked,
+          ...item,
         }))}
         listType={'shopping'}
         setFunc={setPressed}
       />
+      </ScrollView>
 
-      {route?.params?.listName === undefined && (
-        <Text style={styles.center}>Please select a list</Text>
-      )}
-    </ScrollView>
+      {
+        route.params?.listId && (
+          <Button mode='contained' onPress={() => navigation.navigate('CreateNewItem', { listId: route.params?.listId })}>
+            Add new item
+          </Button>
+        )
+      }
+    </View>
   )
 }
 

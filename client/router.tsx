@@ -23,6 +23,10 @@ import EditFamily from './screens/EditFamily'
 import InviteToFamily from './screens/Invites'
 import CreateInvite from './screens/CreateInvite'
 import CreateFamily from './screens/CreateFamily'
+import CreateShopList from './screens/ShoppingList/CreateShopList'
+import EditShopListDetails from './screens/ShoppingList/EditShopListDetails'
+import DeleteShopList from './screens/ShoppingList/DeleteShopList'
+import CreateNewItem from './screens/ShoppingList/CreateNewItem'
 
 function MainApp() {
   return (
@@ -124,6 +128,12 @@ const Router = () => {
       <Stack.Screen name='Invites' component={InviteToFamily} />
       <Stack.Screen name='CreateInvite' component={CreateInvite} />
       <Stack.Screen name='CreateFamily' component={CreateFamily} />
+
+      <Stack.Screen name='CreateShopList' component={CreateShopList} />
+      <Stack.Screen name='DeleteShopList' component={DeleteShopList} />
+      <Stack.Screen name='EditShopListDetails' component={EditShopListDetails} />
+
+      <Stack.Screen name='CreateNewItem' component={CreateNewItem} />
     </Stack.Navigator>
   )
 }

@@ -37,15 +37,9 @@ export default class FamilyDataSource {
   async getUserFamilyLists(userId: string) {
     const foundFamilies = await this.model.find({
       $or: [{creator: userId}, {members: userId}]
-    });
-
-    let foundLists = new Array;
+    }).populate('lists');
     
-    for (const family of foundFamilies) {
-      foundLists.push(await this.model.findOne({ _id: family._id }).populate('lists'));;
-    };
-
-    return foundLists;
+    return foundFamilies.map(family => family.lists).flat();
   }
 
   async createFamily({ name, creator, description, avatar_url}: Pick<FamilyDocument, 'name' | 'creator' | 'description' | 'avatar_url'>) {

@@ -16,7 +16,7 @@ If starting development with hot-reload:
 
 # Features implemented
 
-**Total points from implemented features:** 25/40 points (With extras: 29(30?)/40)
+**Total points from implemented features:** 37/40 points
 <br><br>
 
 ## **Backend** (points: 14/15)
@@ -33,7 +33,7 @@ If starting development with hot-reload:
 
 <br><br>
 
-## **Frontend** (points: 11/25)
+## **Frontend** (points: 18/25)
 <br>
 
   - [x] a user can sign-up the application (2 points)
@@ -42,20 +42,19 @@ If starting development with hot-reload:
   - [x] a user can add families, and modify, delete, and view families they belong to (3 points)
   - [x] a user can invite other users into their families (2 points)
   - [x] a user can accept an invitation to join a family (1 point)
-  - [ ] a user can add, modify, delete, and view shopping lists (of their families) (2 points)
-  - [ ] a user can add an item and its quantity into a shopping list (2 points)
-  - [ ] a user can mark the item with its quantity picked up in a shopping list (2 points)
-  - [ ] a user can update the shopping list when shopping after the shopping list is opened in the app (1 point), or app queries the list in short time intervals (2 point), or the backend can push the changed data into the shopping list in real-time when the user is shopping and the shopping list is open (4 points)
+  - [x] a user can add, modify, delete, and view shopping lists (of their families) (2 points)
+  - [x] a user can add an item and its quantity into a shopping list (2 points)
+  - [x] a user can mark the item with its quantity picked up in a shopping list (2 points)
+  - [x] a user can update the shopping list when shopping after the shopping list is opened in the app (1 point)
   - [ ] the app has a personal look and feel (2 points)
   - [ ] the usability of the app is good (2 points)
 
 <br><br>
 
-## **Other (Extra points)** (points: 5(6?)/7)
+## **Other (Extra points)** (points: 5/7)
 <br>
 
   - [x] Typescript is used (3 points)
   - [x] Git is used (2 points)
   
-  - Suggest / Extra? (2 points)
-    - Github projects was used along with github issues to manage tasks (1 point?)
+  - [ ] Suggest / Extra: Dark mode (2 points)
