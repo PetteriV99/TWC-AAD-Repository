@@ -64,7 +64,8 @@ export default function EditProfile({ navigation: { navigate }}: { navigation: a
       <TextInput
         label="Name"
         value={username}
-        onChangeText={(text) => setUsername(text)}
+        onChangeText={(text) => {
+          setUsername(text)}}
         style={styles.input}
       />
       <TextInput

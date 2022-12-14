@@ -26,7 +26,7 @@ export default class UsersDataSource {
 
   async editUser(id: string, updateValues: Partial<UserDocument>) {
 
-    let userValues;
+    let userValues = updateValues;
     if (updateValues.password) {
       const hash = await bcrypt.hash(updateValues.password, 10);
       userValues = {

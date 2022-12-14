@@ -33,7 +33,6 @@ export default function Login({ navigation }: any) {
     try {
       const jsonValue = JSON.stringify(value)
       await AsyncStorage.setItem('AUTH_KEY', jsonValue).then(() => {
-        navigation.popToTop()
         navigation.navigate('MainApp')
       })
     } catch (e) {
@@ -75,7 +74,7 @@ export default function Login({ navigation }: any) {
           ? error.graphQLErrors.map(({ message }, i) => {
               return <Text key={i}>{message}</Text>
             })
-          : data && data.signUp}
+          : data && null}
       </Text>
     </ScrollView>
   )

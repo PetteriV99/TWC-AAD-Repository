@@ -1,14 +1,14 @@
 import { StyleSheet, View } from 'react-native'
 import { Text, Button } from 'react-native-paper'
 import * as React from 'react'
-import { DarkMode } from '../App'
+// import { DarkMode } from '../App'
 export default function EditProfile({
   navigation: { navigate },
 }: {
   navigation: any
 }) {
-  const dark = React.useContext(DarkMode)
-  console.log(dark)
+  // const dark = React.useContext(DarkMode)
+  // console.log(dark)
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Change theme</Text>

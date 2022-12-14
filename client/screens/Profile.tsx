@@ -37,7 +37,7 @@ export default function Profile({ route, navigation,  }: any) {
       </Card>
 
       <Button
-        onPress={() => navigation.navigate('EditProfile')}
+        onPress={() => navigation.navigate('EditProfile', { refetch: true })}
         mode='contained'
       >
         Edit profile

@@ -32,7 +32,6 @@ export default function Login({ navigation }: any) {
     try {
       const jsonValue = JSON.stringify(value)
       await AsyncStorage.setItem('AUTH_KEY', jsonValue).then(() => {
-        navigation.popToTop()
         navigation.navigate('MainApp')
       })
     } catch (e) {
@@ -66,7 +65,7 @@ export default function Login({ navigation }: any) {
       <Button mode='text' onPress={() => navigation.navigate('Register')}>
         Don't have an account? Sign up
       </Button>
-      {/* Temp field to see login process. Need to add error handling to backend */}
+      
       <Text>
         {loading
           ? 'Loading...'
@@ -74,7 +73,7 @@ export default function Login({ navigation }: any) {
           ? error.graphQLErrors.map(({ message }, i) => {
               return <Text key={i}>{message}</Text>
             })
-          : data && data.logIn}
+          : null}
       </Text>
     </ScrollView>
   )
