@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, ScrollView, View } from 'react-native'
+import { StyleSheet, ScrollView, View, ImageBackground } from 'react-native'
 import { Button, Divider, Text } from 'react-native-paper'
 import * as React from 'react'
 import List from '../components/List'
@@ -19,7 +19,11 @@ const SHOPPING_LIST = gql`
 `
 
 const CHECK_ITEM = gql`
-  mutation CheckItemInShoppingList($listId: ID!, $name: String!, $checked: Boolean!) {
+  mutation CheckItemInShoppingList(
+    $listId: ID!
+    $name: String!
+    $checked: Boolean!
+  ) {
     checkItemInShoppingList(listId: $listId, name: $name, checked: $checked) {
       _id
     }
@@ -27,7 +31,9 @@ const CHECK_ITEM = gql`
 `
 
 export default function Home({ route, navigation }: any) {
-  const { loading, error, data, refetch } = useQuery(SHOPPING_LIST, { variables: { id: route.params?.listId } })
+  const { loading, error, data, refetch } = useQuery(SHOPPING_LIST, {
+    variables: { id: route.params?.listId },
+  })
   const [mutateFunction] = useMutation(CHECK_ITEM)
 
   const [pressed, setPressed] = React.useState<{
@@ -35,7 +41,9 @@ export default function Home({ route, navigation }: any) {
     checked: boolean
   }>({ name: '', checked: true })
 
-  const [selectedListName, setSelectedListName] = React.useState(error && 'Please select a list' || 'Loading...')
+  const [selectedListName, setSelectedListName] = React.useState(
+    (error && 'Please select a list') || 'Loading...'
+  )
   const [selectedListItems, setSelectedListItems] = React.useState<any[]>([])
 
   React.useEffect(() => {
@@ -69,10 +77,12 @@ export default function Home({ route, navigation }: any) {
   React.useEffect(() => {
     if (data && route.params?.listId) {
       setSelectedListName(data.shoppingList.name)
-      setSelectedListItems(data.shoppingList.items.map((item: any) => ({
-        collected: item.checked,
-        ...item,
-      })))
+      setSelectedListItems(
+        data.shoppingList.items.map((item: any) => ({
+          collected: item.checked,
+          ...item,
+        }))
+      )
     } else {
       setSelectedListName('Please select a list')
     }
@@ -81,40 +91,50 @@ export default function Home({ route, navigation }: any) {
   if (loading) return <Text>Loading...</Text>
 
   return (
-    <View style={styles.container}>
-      <Button
-        mode='contained'
-        onPress={async () => {
-          refetch()
-        }}
-      >
-        Refresh
-      </Button>
-      <ScrollView>
-      <List
-        title={selectedListName}
-        headers={[
-          { id: 1, title: 'Name' },
-          { id: 2, title: 'Collected' },
-        ]}
-        items={selectedListItems.map((item: any) => ({
-          key: item.name,
-          collected: item.checked,
-          ...item,
-        }))}
-        listType={'shopping'}
-        setFunc={setPressed}
-      />
-      </ScrollView>
+    <ImageBackground
+      source={require('../assets/home_back.jpg')}
+      style={{ width: '100%', height: '100%' }}
+    >
+      <View style={styles.container}>
+        <Button
+          mode='contained'
+          onPress={async () => {
+            refetch()
+          }}
+        >
+          Refresh
+        </Button>
+        <ScrollView>
+          <List
+            title={selectedListName}
+            headers={[
+              { id: 1, title: 'Name' },
+              { id: 2, title: 'Collected' },
+            ]}
+            items={selectedListItems.map((item: any) => ({
+              key: item.name,
+              collected: item.checked,
+              ...item,
+            }))}
+            listType={'shopping'}
+            setFunc={setPressed}
+          />
+        </ScrollView>
 
-      {
-        route.params?.listId && (
-          <Button mode='contained' onPress={() => navigation.navigate('CreateNewItem', { listId: route.params?.listId })}>
+        {route.params?.listId && (
+          <Button
+            mode='contained'
+            onPress={() =>
+              navigation.navigate('CreateNewItem', {
+                listId: route.params?.listId,
+              })
+            }
+          >
             Add new item
           </Button>
-        )
-      }
-    </View>
+        )}
+      </View>
+    </ImageBackground>
   )
 }
 
@@ -122,6 +142,7 @@ const styles = StyleSheet.create({
   container: {
     margin: 10,
     padding: 10,
+    // backgroundColor: 'rgba(255, 255, 200, 0.95)',
   },
   center: {
     flex: 1,

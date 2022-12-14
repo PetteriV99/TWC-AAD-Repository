@@ -1,12 +1,6 @@
 import { StyleSheet, View } from 'react-native'
 import { Button, Checkbox, DataTable, Text } from 'react-native-paper'
 import * as React from 'react'
-import FamilyEditModal from '../screens/EditFamily'
-import { ApolloQueryResult } from '@apollo/client'
-import FamilyCreateInviteModal from '../screens/CreateInvite'
-import EditShoppingList from '../screens/ShoppingList/EditShoppingList'
-import DeleteShoppingList from '../screens/ShoppingList/DeleteShopList'
-import AddShoppingListItem from '../screens/ShoppingList/AddShoppingListItem'
 
 export default function List({
   navigation,
@@ -30,7 +24,13 @@ export default function List({
   listType: 'family' | 'shopping' | 'lists'
 }) {
   return (
-    <View>
+    <View
+      style={{
+        marginVertical: 15,
+        backgroundColor: 'rgba(255, 255, 200, 0.95)',
+        borderRadius: 15,
+      }}
+    >
       <Text
         style={{ padding: 10, margin: 10, textAlign: 'center', fontSize: 25 }}
       >
@@ -53,12 +53,26 @@ export default function List({
               listType === 'shopping' && setFunc !== undefined && setFunc(i)
             }}
           >
-            <DataTable.Cell>{`${i.quantity ? `${i.quantity}x ` : ''}${i.name}`}</DataTable.Cell>
+            <DataTable.Cell>{`${i.quantity ? `${i.quantity}x ` : ''}${
+              i.name
+            }`}</DataTable.Cell>
             {listType === 'family' && (
               <>
                 <DataTable.Cell>
-                  <Button onPress={() => navigation.navigate('EditFamily', { familyId: i.id })}>Edit</Button>
-                  <Button onPress={() => navigation.navigate('CreateInvite', { familyId: i.id })}>Invite</Button>
+                  <Button
+                    onPress={() =>
+                      navigation.navigate('EditFamily', { familyId: i.id })
+                    }
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    onPress={() =>
+                      navigation.navigate('CreateInvite', { familyId: i.id })
+                    }
+                  >
+                    Invite
+                  </Button>
                 </DataTable.Cell>
               </>
             )}
@@ -72,10 +86,23 @@ export default function List({
             {listType === 'lists' && (
               <>
                 <DataTable.Cell>
-                  <Button onPress={() => navigation.navigate('EditShopListDetails', { shoplistId: i.id })}>
+                  <Button
+                    onPress={() =>
+                      navigation.navigate('EditShopListDetails', {
+                        shoplistId: i.id,
+                      })
+                    }
+                  >
                     Edit
                   </Button>
-                  <Button onPress={() => navigation.navigate('DeleteShopList', { familyId: i.familyId, shoplistId: i.id })}>
+                  <Button
+                    onPress={() =>
+                      navigation.navigate('DeleteShopList', {
+                        familyId: i.familyId,
+                        shoplistId: i.id,
+                      })
+                    }
+                  >
                     Delete
                   </Button>
                 </DataTable.Cell>

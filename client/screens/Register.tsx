@@ -20,9 +20,9 @@ export default function Login({ navigation }: any) {
       client.resetStore()
       storeToken(data.signUp)
     },
-    onError: (err) => {
-        console.log(err)
-    }
+    onError: err => {
+      console.log(err)
+    },
   })
 
   const handleSubmit = () => {
@@ -59,6 +59,7 @@ export default function Login({ navigation }: any) {
         onChangeText={text => setEmail(text)}
       />
       <TextInput
+        secureTextEntry
         label='Password'
         value={password}
         onChangeText={text => setPassword(text)}
@@ -71,7 +72,9 @@ export default function Login({ navigation }: any) {
         {loading
           ? 'Loading...'
           : error
-          ? error.graphQLErrors.map(({ message }, i) => {return(<Text key={i}>{message}</Text>)})
+          ? error.graphQLErrors.map(({ message }, i) => {
+              return <Text key={i}>{message}</Text>
+            })
           : data && data.signUp}
       </Text>
     </ScrollView>

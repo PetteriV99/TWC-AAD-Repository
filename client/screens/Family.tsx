@@ -1,7 +1,7 @@
 import { gql, useQuery } from '@apollo/client'
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
-import { StyleSheet, Text, ScrollView } from 'react-native'
+import { StyleSheet, Text, ScrollView, ImageBackground } from 'react-native'
 import { Button } from 'react-native-paper'
 import CustomModal from '../components/CustomModal'
 import List from '../components/List'
@@ -23,7 +23,13 @@ const USER_FAMILIES = gql`
   }
 `
 
-export default function Family({ route, navigation }: { route: any, navigation: any }) {
+export default function Family({
+  route,
+  navigation,
+}: {
+  route: any
+  navigation: any
+}) {
   const { loading, error, data, refetch } = useQuery(USER_FAMILIES)
 
   const [families, setFamilies] = React.useState([])
@@ -45,29 +51,48 @@ export default function Family({ route, navigation }: { route: any, navigation: 
   if (error) return <Text>{error.message}</Text>
 
   return (
-    <ScrollView style={styles.container}>
-      <Button
-        mode='contained'
-        onPress={async () => {
-          refetch()
-        }}
-      >
-        Refresh
-      </Button>
-      <List
-        navigation={navigation}
-        title='My families'
-        headers={[{ id: 1, title: 'Name' }]}
-        items={families.map((family: any) => ({
-          id: family._id,
-          name: family.name,
-        }))}
-        listType={'family'}
-      />
+    <ImageBackground
+      source={require('../assets/family_back3.jpg')}
+      style={{ width: '100%', height: '100%' }}
+    >
+      <ScrollView style={styles.container}>
+        <Button
+          mode='contained'
+          onPress={async () => {
+            refetch()
+          }}
+        >
+          Refresh
+        </Button>
+        <List
+          navigation={navigation}
+          title='My families'
+          headers={[{ id: 1, title: 'Name' }]}
+          items={families.map((family: any) => ({
+            id: family._id,
+            name: family.name,
+          }))}
+          listType={'family'}
+        />
 
-      <Button style={styles.button } mode='contained' onPress={() => navigation.navigate('Invites')}> Invites </Button>
-      <Button style={styles.button } mode='contained' onPress={() => navigation.navigate('CreateFamily')}> Create family </Button>
-    </ScrollView>
+        <Button
+          style={styles.button}
+          mode='contained'
+          onPress={() => navigation.navigate('Invites')}
+        >
+          {' '}
+          Invites{' '}
+        </Button>
+        <Button
+          style={styles.button}
+          mode='contained'
+          onPress={() => navigation.navigate('CreateFamily')}
+        >
+          {' '}
+          Create family{' '}
+        </Button>
+      </ScrollView>
+    </ImageBackground>
   )
 }
 
@@ -75,6 +100,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
     margin: 10,
+    // backgroundColor: 'rgba(255, 255, 200, 0.95)',
   },
   button: {
     margin: 10,
