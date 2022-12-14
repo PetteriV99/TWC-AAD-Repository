@@ -10,10 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function More({ navigation }: any) {
   const signOut = () => {
-    AsyncStorage.removeItem('AUTH_KEY').then(navigation.reset({
-      index: 0,
-      routes: [{ name: 'Login' }],
-    }))
+    AsyncStorage.removeItem('AUTH_KEY').then(navigation.navigate('Login'))
   }
 
   return (
