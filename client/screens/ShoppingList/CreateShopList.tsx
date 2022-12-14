@@ -1,6 +1,6 @@
 import { ApolloQueryResult, gql, useMutation, useQuery } from '@apollo/client'
 import React from 'react'
-import { View, TextInput, StyleSheet, Text } from 'react-native'
+import { View, TextInput, StyleSheet, Text, ScrollView } from 'react-native'
 import { Button } from 'react-native-paper'
 import CustomModal from '../../components/CustomModal'
 import DropDownInput from '../../components/DropDownInput'
@@ -45,7 +45,7 @@ export default function CreateShopList({
 
   const [name, setName] = React.useState('')
   const [description, setDescription] = React.useState('')
-  const [family, setFamily] = React.useState({ name: 'None', id: '' })
+  const [family, setFamily] = React.useState({ name: 'Select family', id: '' })
 
   const families = familyData.userFamilies.map((uf: any) => ({
     name: uf.name,
@@ -70,10 +70,9 @@ export default function CreateShopList({
     <View style={styles.container}>
       <Text style={styles.title}>Add new shopping list</Text>
       <Text style={styles.subtitle}>Fill in the required details</Text>
-      <Text>Selected family: {family.name}</Text>
       <DropDownInput
         style={styles.dropdown}
-        title='Select family'
+        title={family.name}
         items={families}
         setFunc={setFamily}
       />
@@ -111,7 +110,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 25,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginVertical: 10,
   },
   subtitle: {
     fontSize: 15,
@@ -123,7 +122,7 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 5,
-    marginBottom: 10,
+    marginVertical: 10,
     padding: 10,
   },
   buttonContainer: {

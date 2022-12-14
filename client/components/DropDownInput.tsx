@@ -19,7 +19,8 @@ const DropDownInput = ({
 
   return (
     <List.Accordion
-      style={style}
+      style={[style, { borderRadius: 20, backgroundColor: 'white' }]}
+      theme={{ colors: { background: 'rgba(130, 88, 105, 0)' } }}
       title={title}
       left={props => <List.Icon {...props} icon='family-tree' />}
       expanded={visible}
@@ -27,6 +28,13 @@ const DropDownInput = ({
     >
       {items.map(i => (
         <List.Item
+          left={props => <List.Icon {...props} icon='family-tree' />}
+          style={{
+            backgroundColor: 'rgb(189, 157, 169)',
+            borderRadius: 10,
+            marginHorizontal: 10,
+            marginVertical: 2,
+          }}
           title={i.name}
           key={i.id}
           onPress={() => {
