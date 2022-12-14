@@ -16,7 +16,7 @@ If starting development with hot-reload:
 
 # Features implemented
 
-**Total points from implemented features:** 37/40 points
+**Total points from implemented features:** 39/40 points
 <br><br>
 
 ## **Backend** (points: 14/15)
@@ -33,7 +33,7 @@ If starting development with hot-reload:
 
 <br><br>
 
-## **Frontend** (points: 18/25)
+## **Frontend** (points: 20/25)
 <br>
 
   - [x] a user can sign-up the application (2 points)
@@ -46,7 +46,7 @@ If starting development with hot-reload:
   - [x] a user can add an item and its quantity into a shopping list (2 points)
   - [x] a user can mark the item with its quantity picked up in a shopping list (2 points)
   - [x] a user can update the shopping list when shopping after the shopping list is opened in the app (1 point)
-  - [ ] the app has a personal look and feel (2 points)
+  - [x] the app has a personal look and feel (2 points)
   - [ ] the usability of the app is good (2 points)
 
 <br><br>
